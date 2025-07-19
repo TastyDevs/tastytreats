@@ -1,13 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 :root {
-  /* font-family: Inter, Avenir, Helvetica, Arial, sans-serif; */
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   line-height: 1.5;
   font-weight: 400;
-
-  color: #242424;
-  background-color: rgba(255, 255, 255, 0.87);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -30,4 +27,547 @@ main {
 }
 main:has(.back-link) {
   text-align: center;
+}
+
+/**
+ * Renk Paleti Değişkenleri
+ */
+:root {
+  /* --- Katı Renkler --- */
+  --white: #fff; /* White (Beyaz) */
+  --white-smoke: #f8f8f8; /* White Smoke (Çok Açık Gri) */
+  --silver: #cecdcd; /* Silver (Gümüş Gri) */
+  --pistachio: #9bb537; /* Pistachio (Fıstık Yeşili) */
+  --charcoal: #383838; /* Charcoal (Kömür Grisi) */
+  --onyx: #050505; /* Onyx (Siyaha Yakın) */
+  --black: #000000; /* Black (Siyah) */
+  --jet: #1e1e1e; /* Jet - Deep Charcoal Gray */
+
+  /* --- Şeffaf Renkler --- */
+  --white-50-opacity: rgba(255, 255, 255, 0.5); /* White with 50% Opacity */
+  --white-20-opacity: rgba(255, 255, 255, 0.2); /* White with 20% Opacity */
+  --white-30-opacity: rgba(255, 255, 255, 0.3); /* White with 30% Opacity */
+
+  --onyx-80-opacity: rgba(5, 5, 5, 0.8); /* Onyx with 80% Opacity */
+  --onyx-50-opacity: rgba(5, 5, 5, 0.5); /* Onyx with 50% Opacity */
+  --onyx-30-opacity: rgba(5, 5, 5, 0.3); /* Onyx with 30% Opacity */
+  --onyx-20-opacity: rgba(5, 5, 5, 0.2); /* Onyx with 20% Opacity */
+  --onyx-10-opacity: rgba(5, 5, 5, 0.1); /* Onyx with 10% Opacity */
+
+  /* --- Geçişler (Gradients) --- */
+  --pistachio-gradient: linear-gradient(
+    91deg,
+    #9bb537 0%,
+    rgba(155, 181, 55, 0.69) 100%
+  );
+}
+
+/* --- Font Ailesi Değişkenleri --- */
+:root {
+  --font-family: 'Inter', sans-serif;
+}
+
+/* Ana Arama Alanı */
+.search-input {
+  width: 278px;
+  height: 48px;
+  padding: 14px 18px;
+  border: 1px solid var(--onyx-20-opacity);
+  border-radius: 15px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+/* ==========================================================================
+   Temel Stiller 
+   ========================================================================== */
+
+/* Tüm arama/filtre elemanları için ortak temel stiller */
+.search-input,
+.search-time,
+.search-area,
+.search-ingredients {
+  display: flex;
+  height: 46px;
+  border: 1px solid var(--onyx-20-opacity);
+  border-radius: 15px;
+  outline: none;
+}
+
+/* Sadece filtre butonları için ortak flex ayarları */
+.search-time,
+.search-area,
+.search-ingredients {
+  justify-content: center;
+  align-items: center;
+  padding: 14px 18px;
+}
+
+/* Her elemanın kendine özgü mobil stilleri */
+.search-input {
+  width: 335px;
+  padding: 14px 18px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.search-time {
+  width: 158px;
+  gap: 67px;
+}
+
+.search-area {
+  width: 161px;
+  gap: 60px;
+}
+
+.search-ingredients {
+  width: 188px;
+  gap: 72px;
+}
+
+/* ==========================================================================
+   1. Temel Metin Stilleri (Mobile First - 320px ve üzeri)
+   ========================================================================== */
+
+.logo {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+  text-align: center;
+  color: var(--pistachio);
+}
+
+.hero-title {
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--onyx);
+}
+
+.hero-card-title {
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(248, 248, 248, 0.6);
+}
+
+.hero-card-subtitle {
+  font-size: 8px;
+  text-align: center;
+  color: rgba(248, 248, 248, 0.2);
+}
+
+.nav-text {
+  font-size: 12px;
+  color: var(--white-smoke);
+  transition: color 0.3s ease;
+}
+
+.nav-text:hover {
+  color: var(--pistachio);
+}
+
+.hero-subtitle {
+  font-size: 14px;
+  line-height: 1.29;
+  color: var(--onyx);
+}
+
+.btn-text,
+.recipe-title,
+.input-text,
+.dropdown-text,
+.category-text {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.recipe-title {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.recipe-title,
+.input-text,
+.dropdown-text,
+.category-text {
+  line-height: 1.29;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.33;
+  text-transform: uppercase;
+  color: var(--onyx);
+}
+
+.popular-recipe-text {
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--onyx-80-opacity);
+}
+
+.recipe-text {
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--white-smoke);
+}
+
+.popup-text {
+  font-size: 14px;
+  line-height: 1.29;
+  color: var(--onyx-80-opacity);
+}
+
+.popup-tag-text {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.17;
+  color: var(--onyx);
+}
+
+.favorites-placeholder-text {
+  font-size: 14px;
+  line-height: 1.29;
+  text-align: center;
+  color: var(--onyx);
+}
+
+/* ==========================================================================
+  Buton Sınıfları
+   ========================================================================== */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  user-select: none;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.order-now-btn {
+  width: 111px;
+  height: 37px;
+  padding: 10px 20px;
+  border: 1px solid var(--pistachio);
+  border-radius: 12px;
+  color: var(--onyx);
+  background-color: transparent;
+}
+
+.order-now-btn:hover {
+  background-color: var(--pistachio);
+  color: var(--white-smoke);
+}
+
+.categories-box {
+  width: 176px;
+  height: 50px;
+  padding: 14px 29px;
+  border: 1px solid var(--onyx-20-opacity);
+  border-radius: 15px;
+  color: var(--onyx-50-opacity);
+  background-color: transparent;
+}
+
+.categories-box:hover {
+  background-color: var(--pistachio);
+  color: var(--white-smoke);
+  border: none;
+}
+
+.add-to-favorite-btn {
+  width: 148px;
+  height: 41px;
+  padding: 12px 24px;
+  border-radius: 15px;
+  background-color: var(--pistachio);
+  color: var(--white-smoke);
+  border: none;
+}
+
+.add-to-favorite-btn:hover {
+  color: var(--white-smoke);
+}
+
+.send-btn {
+  width: 295px;
+  height: 46px;
+  padding: 15px;
+  border-radius: 15px;
+  background-color: var(--pistachio);
+  color: var(--white-smoke);
+  border: none;
+}
+
+.send-btn:hover {
+  color: var(--onyx);
+}
+
+.give-a-rating-box {
+  width: 133px;
+  height: 41px;
+  padding: 12px 24px;
+  border: 1px solid var(--pistachio);
+  border-radius: 15px;
+  color: var(--onyx);
+  background-color: transparent;
+}
+
+.give-a-rating-box:hover {
+  background-color: var(--pistachio);
+  color: var(--white-smoke);
+}
+
+.see-recipe-btn {
+  width: 89px;
+  height: 31px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background-color: var(--pistachio);
+  color: var(--white-smoke);
+  border: 1px solid transparent;
+}
+
+.see-recipe-btn:hover {
+  color: var(--onyx);
+  border-color: var(--pistachio);
+  background-color: transparent;
+}
+
+/* Tüm dropdown panelleri için temel görünüm */
+.dropdown-panel {
+  background: var(--white);
+  border-radius: 14px;
+  box-shadow: 0 4px 36px 0 rgba(0, 0, 0, 0.02);
+
+  overflow-y: auto;
+}
+
+.dropdown-option {
+  color: var(--onyx-30-opacity);
+}
+
+.dropdown-option:hover {
+  color: var(--onyx);
+}
+
+/* Her panele özgü boyutlar */
+.time-dropdown {
+  width: 125px;
+  height: 128px;
+}
+
+.area-dropdown {
+  width: 141px;
+  height: 188px;
+}
+
+.ingredients-dropdown {
+  width: 188px;
+  height: 188px;
+}
+
+/* Özel scrollbar stilini uygulayacak olan ana sınıf */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Scrollbar'ın tutamaç (sürüklenen) kısmı */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--onyx-10-opacity);
+  border-radius: 12px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ==========================================================================
+   2. Tablet Stilleri (768px ve daha geniş ekranlar için)
+   ========================================================================== */
+
+@media (min-width: 768px) {
+  .search-input,
+  .search-time,
+  .search-area,
+  .search-ingredients {
+    height: 48px;
+  }
+
+  /* Her elemanın tablete özel değişen stilleri */
+  .search-input {
+    width: 278px;
+  }
+
+  .search-time {
+    width: 115px;
+    gap: 18px;
+  }
+
+  .search-area {
+    width: 147px;
+    gap: 40px;
+  }
+  .order-now-btn,
+  .add-to-favorite-btn,
+  .give-a-rating-box {
+    padding: 14px 28px;
+    height: 45px;
+    border-radius: 15px;
+  }
+
+  .order-now-btn {
+    width: 127px;
+  }
+  .add-to-favorite-btn {
+    width: 156px;
+  }
+  .give-a-rating-box {
+    width: 141px;
+  }
+
+  .send-btn {
+    width: 360px;
+    height: 48px;
+    padding: 14px 20px;
+  }
+
+  .logo {
+    font-size: 18px;
+    line-height: 1.11;
+  }
+
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .hero-card-title {
+    font-size: 14px;
+    line-height: 1.29;
+  }
+
+  .hero-card-subtitle {
+    font-size: 12px;
+    line-height: 1.17;
+  }
+
+  .nav-text {
+    color: var(--onyx);
+  }
+
+  .hero-subtitle {
+    line-height: 1.5;
+  }
+
+  .input-text,
+  .dropdown-text,
+  .category-text {
+    line-height: 1.25;
+  }
+
+  .popular-recipe-text {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .favorites-placeholder-text {
+    line-height: 1.5;
+  }
+}
+
+/* ==========================================================================
+   3. Masaüstü Stilleri
+   ========================================================================== */
+
+@media (min-width: 1280px) {
+  .search-time {
+    width: 119px;
+    gap: 22px;
+  }
+
+  .search-area {
+    width: 119px;
+  }
+
+  .categories-box {
+    width: 174px;
+    padding: 14px 28px;
+  }
+
+  .see-recipe-btn {
+    width: 93px;
+    padding: 8px 16px;
+  }
+
+  .section-title {
+    font-size: 24px;
+    line-height: 1.17;
+  }
+
+  .popup .section-title {
+    font-size: 18px;
+    line-height: 1.22;
+    text-align: center;
+  }
+}
+
+/* ======================================================= */
+/* --- Karanlık Tema Stilleri --- */
+/* ======================================================= */
+
+/* --- Genel Sayfa Stilleri --- */
+body[data-theme='dark'] {
+  background-color: var(--jet);
+  color: var(--white);
+}
+
+/* --- Dark Theme --- */
+
+body[data-theme='dark'] .search-input,
+body[data-theme='dark'] .search-time,
+body[data-theme='dark'] .search-area,
+body[data-theme='dark'] .search-ingredients {
+  border-color: var(--white-20-opacity);
+  background-color: var(--jet);
+  color: var(--white-50-opacity);
+}
+
+body[data-theme='dark'] .search-input::placeholder {
+  color: var(--white-50-opacity);
+}
+
+/* --- Dropdown Menüler --- */
+
+body[data-theme='dark'] .dropdown-panel {
+  background-color: var(--onyx);
+}
+
+body[data-theme='dark'] .dropdown-option {
+  color: var(--white-30-opacity);
+}
+
+body[data-theme='dark'] .dropdown-option:hover {
+  color: var(--white);
+}
+
+body[data-theme='dark'] .categories-box {
+  border: 1px solid var(--white-20-opacity);
+}
+
+body[data-theme='dark'] .order-now-btn {
+  color: var(--white-smoke);
 }
