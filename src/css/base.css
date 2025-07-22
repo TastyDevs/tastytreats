@@ -34,13 +34,11 @@ main:has(.back-link) {
  */
 :root {
   /* --- Katı Renkler --- */
-  --white: #fff; /* White (Beyaz) */
   --white-smoke: #f8f8f8; /* White Smoke (Çok Açık Gri) */
   --silver: #cecdcd; /* Silver (Gümüş Gri) */
   --pistachio: #9bb537; /* Pistachio (Fıstık Yeşili) */
   --charcoal: #383838; /* Charcoal (Kömür Grisi) */
   --onyx: #050505; /* Onyx (Siyaha Yakın) */
-  --black: #000000; /* Black (Siyah) */
   --jet: #1e1e1e; /* Jet - Deep Charcoal Gray */
 
   /* --- Şeffaf Renkler --- */
