@@ -3,7 +3,7 @@ import { fetchFilteredRecipes } from '../api/tastyTreatsApi.js';
 const recipesContainer = document.querySelector('#recipes-container');
 async function loadAndDisplayRecipes() {
   try {
-    const response = await fetchFilteredRecipes({ limit: 30 });
+    const response = await fetchFilteredRecipes({ limit: 50 });
     const recipes = response.results;
 
     if (!recipes || recipes.length === 0) {
