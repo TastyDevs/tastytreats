@@ -569,3 +569,7 @@ body[data-theme='dark'] .categories-box {
 body[data-theme='dark'] .order-now-btn {
   color: var(--white-smoke);
 }
+
+.recipes-big-container {
+  display: flex;
+}

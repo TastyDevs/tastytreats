@@ -9,9 +9,18 @@
   </head>
   <body>
     <load src="./partials/header.html" icon-path="img/sprite.svg#logo" />
-
+    <load src="./partials/home-hero.html" />
     <main>
-      <load src="./partials/recipes.html" />
+      <div class="container recipes-big-container">
+        <div class="recipes-big-container-left">
+          <load src="./partials/recipes-categories.html" />
+          <load src="./partials/recipes-popular.html" />
+        </div>
+        <div class="recipes-big-container-right">
+          <load src="./partials/recipes-filter.html" />
+          <load src="./partials/recipes.html" />
+        </div>
+      </div>
     </main>
 
     <load src="./partials/footer.html" />
