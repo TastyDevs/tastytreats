@@ -5,11 +5,18 @@ const paginationContainer = document.querySelector('#pagination');
 
 let currentPage = 1;
 let totalPages = 1;
+let limit = calculateLimit();
 
-const limit = 9;
+function calculateLimit() {
+  const width = window.innerWidth;
+  if (width < 768) return 6;
+  if (width < 1280) return 8;
+  return 9;
+}
 
 async function loadAndDisplayRecipes(page = 1) {
   try {
+    limit = calculateLimit();
     const response = await fetchFilteredRecipes({ page, limit });
     const recipes = response.results;
     totalPages =
@@ -36,8 +43,7 @@ async function loadAndDisplayRecipes(page = 1) {
             </div>
             <button class="recipe-card-button" type="button">See recipe</button>
           </div>
-        </div>
-      `;
+        </div>`;
       })
       .join('');
 
@@ -74,8 +80,12 @@ function renderPagination(total, current) {
   });
 }
 
-loadAndDisplayRecipes();
-
 window.addEventListener('resize', () => {
-  loadAndDisplayRecipes(currentPage);
+  const newLimit = calculateLimit();
+  if (newLimit !== limit) {
+    currentPage = 1;
+    loadAndDisplayRecipes(currentPage);
+  }
 });
+
+loadAndDisplayRecipes();

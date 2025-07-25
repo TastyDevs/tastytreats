@@ -1,0 +1,36 @@
+.recipes-list {
+  display: grid;
+  gap: 16px;
+}
+
+@media (max-width: 767px) {
+  .recipes-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+  }
+
+  .recipe-card {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .recipes-list {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: auto;
+  }
+  .recipe-card {
+    grid-column: span 1;
+  }
+}
+
+@media (min-width: 1280px) {
+  .recipes-list {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+  }
+  .recipe-card {
+    grid-column: span 1;
+  }
+}
