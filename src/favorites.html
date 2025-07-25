@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Favorites</title>
     <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="./css/favorites.css" />
   </head>
   <body>
     <load
@@ -16,9 +17,17 @@
 
     <main>
       <div class="container">
-        <h1 class="main-title">
-          <span class="main-title-gradient">Welcome</span> to page 2
-        </h1>
+        <div class="favorites-hero"></div>
+        <div class="favorites-placeholder">
+          <svg class="placeholder-icon">
+            <use href="./img/sprite.svg#icon-chef-cap"></use>
+          </svg>
+          <p class="favorites-placeholder-text">
+            It appears that you haven't added any recipes to your favorites yet.
+            To get started, you can add recipes that you like to your favorites
+            for easier access in the future.
+          </p>
+        </div>
       </div>
     </main>
 
