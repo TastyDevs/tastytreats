@@ -6,16 +6,9 @@ const paginationContainer = document.querySelector('#pagination');
 let currentPage = 1;
 let totalPages = 1;
 
-function getResponsiveLimit() {
-  const width = window.innerWidth;
-  if (width < 768) return 6;
-  if (width < 1280) return 8;
-  return 9;
-}
+const limit = 9;
 
 async function loadAndDisplayRecipes(page = 1) {
-  const limit = getResponsiveLimit();
-
   try {
     const response = await fetchFilteredRecipes({ page, limit });
     const recipes = response.results;
