@@ -237,7 +237,7 @@ main:has(.back-link) {
 
 .favorites-placeholder-text {
   font-size: 14px;
-  line-height: 1.29;
+  line-height: 18px;
   text-align: center;
   color: var(--onyx);
 }
@@ -483,7 +483,8 @@ main:has(.back-link) {
   }
 
   .favorites-placeholder-text {
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: 24px;
   }
 }
 

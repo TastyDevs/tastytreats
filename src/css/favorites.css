@@ -1,0 +1,82 @@
+.favorites-hero {
+  width: 335px;
+  height: 516px;
+  background-color: var(--onyx);
+  margin: 0 auto;
+  border-radius: 15px;
+  margin-bottom: 40px;
+  background-image: url(../img/webp/favorites-hero-mobile.webp);
+}
+
+.favorites-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.placeholder-icon {
+  width: 68px;
+  height: 58px;
+}
+
+.favorites-placeholder-text {
+  width: 335px;
+}
+
+@media (min-resolution: 2dppx) {
+  .favorites-hero {
+    background-image: url('../img/webp/favorites-hero-mobile@2x.webp');
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+  }
+}
+
+/*Tablet Device Styles*/
+
+@media only screen and (min-width: 768px) {
+  .favorites-hero {
+    width: 704px;
+    height: 356px;
+    margin-bottom: 64px;
+    background-image: url(../img/webp/favorites-hero-tablet.webp);
+  }
+
+  @media (min-resolution: 2dppx) {
+    .favorites-hero {
+      background-image: url('../img/webp/favorites-hero-tablet@2x.webp');
+    }
+  }
+
+  .favorites-placeholder {
+    gap: 32px;
+    margin-bottom: 64px;
+  }
+
+  .placeholder-icon {
+    width: 97px;
+    height: 83px;
+  }
+
+  .favorites-placeholder-text {
+    width: 481px;
+  }
+}
+
+/*Desktop Device Styles*/
+
+@media only screen and (min-width: 1280px) {
+  .favorites-hero {
+    width: 1080px;
+    background-image: url(../img/webp/favorites-hero-desktop.webp);
+  }
+
+  @media (min-resolution: 2dppx) {
+    .favorites-hero {
+      background-image: url('../img/webp/favorites-hero-desktop@2x.webp');
+    }
+  }
+}
