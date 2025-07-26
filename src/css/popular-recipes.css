@@ -1,0 +1,30 @@
+.popular-recipe-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.popular-recipes-card {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  width: 332px;
+  height: 67px;
+  cursor: pointer;
+}
+
+.popular-recipes-image {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+}
+
+.popular-recipes-description,
+.popular-recipes-title {
+  width: 255px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
