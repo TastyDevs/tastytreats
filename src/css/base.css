@@ -205,14 +205,14 @@ main:has(.back-link) {
 .section-title {
   font-weight: 600;
   font-size: 18px;
-  line-height: 1.33;
+  line-height: 24px;
   text-transform: uppercase;
   color: var(--onyx);
 }
 
 .popular-recipe-text {
   font-size: 12px;
-  line-height: 1.33;
+  line-height: 16px;
   color: var(--onyx-80-opacity);
 }
 
