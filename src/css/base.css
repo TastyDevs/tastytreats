@@ -570,6 +570,8 @@ body[data-theme='dark'] .order-now-btn {
   color: var(--white-smoke);
 }
 
-.recipes-big-container {
-  display: flex;
+@media only screen and (min-width: 768px) {
+  .recipes-big-container {
+    display: flex;
+  }
 }
