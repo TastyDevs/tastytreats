@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TastyTreats</title>
     <script type="module" crossorigin src="/tastytreats/index.js"></script>
-    <link rel="stylesheet" crossorigin href="/tastytreats/assets/index-DIMMbxa2.css">
-    <link rel="stylesheet" crossorigin href="/tastytreats/assets/styles-DksBaaxf.css">
+    <link rel="stylesheet" crossorigin href="/tastytreats/assets/index-rZI9cztD.css">
+    <link rel="stylesheet" crossorigin href="/tastytreats/assets/styles-DNyuezUg.css">
   </head>
   <body>
     <header class="header">
@@ -49,7 +49,52 @@
 
         </div>
         <div class="recipes-big-container-right">
-          <section class="recipes-filter">SEARCH</section>
+<section class="filters">
+  <label class="filter-group search-label">
+    <span class="filter-label">Search</span>
+    <div class="input-wrapper">
+      <input type="text" placeholder="Enter Text" class="filter-input" />
+    </div>
+  </label>
+
+  <label class="filter-group">
+    <span class="filter-label">Time</span>
+    <select class="filter-select">
+      <option>10 min</option>
+      <option>20 min</option>
+      <option>30 min</option>
+      <option selected>40 min</option>
+    </select>
+  </label>
+
+  <label class="filter-group">
+    <span class="filter-label">Area</span>
+    <select class="filter-select">
+      <option>French</option>
+      <option>Spanish</option>
+      <option selected>Italian</option>
+      <option>English</option>
+      <option>Norwegian</option>
+      <option>Ukrainian</option>
+    </select>
+  </label>
+
+  <label class="filter-group">
+    <span class="filter-label">Ingredients</span>
+    <select class="filter-select">
+      <option>Cabbage</option>
+      <option>Cucumber</option>
+      <option selected>Tomato</option>
+      <option>Corn</option>
+      <option>Radish</option>
+      <option>Parsley</option>
+    </select>
+  </label>
+
+  <button class="reset-filter" type="button">
+    <span class="close-btn">✕</span> Reset the filter
+  </button>
+</section>
 
           <section class="recipes-section">
   <div id="recipes-container" class="recipes-list"></div>
