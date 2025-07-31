@@ -1,0 +1,44 @@
+.category-filter {
+    width: 235px;
+    padding-bottom: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+.category-list {
+    list-style: none;
+    padding-top:20px;
+    margin: 0;
+    max-height: 416px;
+    /* Scroll sadece bu alan için */
+    overflow-y: auto;
+}
+
+.category-list li {
+    margin-bottom: 12px;
+}
+
+.category-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 16px;
+    color: #b4b4b4;
+    font-weight: 400;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.category-btn:hover {
+    color: #9BB537;
+}
+
+.category-btn.active {
+    color: #9BB537;
+    font-weight: 500;
+}
