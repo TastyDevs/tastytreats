@@ -30,18 +30,30 @@ async function loadAndDisplayRecipes(page = 1) {
 
     const recipesMarkup = recipes
       .map(recipe => {
+        const ratingValue = (recipe.rating / 5) * 100;
         return `
         <div class="recipe-card" data-id="${recipe._id}">
+          <button class="heart-btn" aria-label="Add to favorites">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
           <img class="recipe-card-image" src="${recipe.thumb}" alt="${
           recipe.title
         }" loading="lazy">
-          <div class="recipe-card-content">
+          <div class="recipe-card-details">
             <h3 class="recipe-card-title">${recipe.title}</h3>
             <p class="recipe-card-description">${recipe.description}</p>
-            <div class="recipe-card-rating">
-              <span>${recipe.rating.toFixed(1)}</span>
+            <div class="recipe-card-footer">
+              <div class="recipe-card-rating">
+                <span class="rating-value">${recipe.rating.toFixed(1)}</span>
+                <div class="rating-stars" style="--rating: ${ratingValue}%">
+                  <span>★★★★★</span>
+                  <span class="stars-filled">★★★★★</span>
+                </div>
+              </div>
+              <button class="recipe-card-button" type="button">See recipe</button>
             </div>
-            <button class="recipe-card-button" type="button">See recipe</button>
           </div>
         </div>`;
       })
