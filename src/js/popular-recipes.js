@@ -36,4 +36,5 @@ async function displayPopularRecipes() {
     popularRecipeContainer.innerHTML = `<p>Sorry, we could not load the recipes at this time</p>`;
   }
 }
+
 displayPopularRecipes();
