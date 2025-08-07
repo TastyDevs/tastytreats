@@ -1,22 +1,19 @@
-.category-filter {
-    width: 235px;
-    padding-bottom: 40px;
-    background-color: #fff;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
+.category-container {
+ padding: 0;
+  border-radius: 16px;
+  margin: auto;
 }
 
 
 
 
 .category-list {
-    list-style: none;
+     list-style: none;
     padding-top:20px;
-    margin: 0;
-    max-height: 416px;
-    /* Scroll sadece bu alan için */
+    width: 326px;
+    max-height: 198px;
     overflow-y: auto;
+
 }
 
 .category-list li {
@@ -24,14 +21,13 @@
 }
 
 .category-btn {
-    background: none;
+  background: none;
     border: none;
     padding: 0;
-    font-size: 16px;
     color: #b4b4b4;
-    font-weight: 400;
     cursor: pointer;
     transition: color 0.2s ease-in-out;
+
 }
 
 .category-btn:hover {
@@ -42,3 +38,25 @@
     color: #9BB537;
     font-weight: 500;
 }
+@media (min-width: 768px) {
+  .category-container {
+      margin-top: 40px;
+    }
+    
+    .category-list {
+       width: 176px;
+       max-height: 416px;
+       margin-bottom: 50px;
+    }
+    }
+
+@media (min-width: 1280px) {
+    .category-container {
+      margin-top: 50px;
+    }
+    .category-list {
+       width: 235px;
+       max-height: 416px;
+       margin-bottom: 50px;
+    }
+    }
