@@ -1,4 +1,5 @@
 import { fetchFilteredRecipes } from '../api/tastyTreatsApi.js';
+import { toggleFavorite, isFavorite } from '../utils/localFavorites.js';
 
 const recipesContainer = document.querySelector('#recipes-container');
 const paginationContainer = document.querySelector('#pagination');
@@ -31,9 +32,12 @@ async function loadAndDisplayRecipes(page = 1) {
     const recipesMarkup = recipes
       .map(recipe => {
         const ratingValue = (recipe.rating / 5) * 100;
+        const isActive = isFavorite(recipe._id) ? 'active' : '';
+
         return `
         <div class="recipe-card" data-id="${recipe._id}">
-          <button class="heart-btn" aria-label="Add to favorites">
+          {/* Kontrol sonucuna göre 'active' sınıfını butona ekle */}
+          <button class="heart-btn ${isActive}" aria-label="Add to favorites">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
@@ -60,6 +64,19 @@ async function loadAndDisplayRecipes(page = 1) {
       .join('');
 
     recipesContainer.innerHTML = recipesMarkup;
+    recipesContainer.onclick = function (event) {
+      const heartBtn = event.target.closest('.heart-btn');
+      if (!heartBtn) return;
+
+      const recipeCard = heartBtn.closest('.recipe-card');
+      const recipeId = recipeCard.dataset.id;
+
+      const recipe = recipes.find(r => r._id === recipeId);
+      if (!recipe) return;
+      toggleFavorite(recipe);
+      heartBtn.classList.toggle('active');
+    };
+
     renderPagination(totalPages, page);
   } catch (error) {
     console.error('An error occurred while loading recipes:', error);
