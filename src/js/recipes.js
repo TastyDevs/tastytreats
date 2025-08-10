@@ -8,6 +8,16 @@ let currentPage = 1;
 let totalPages = 1;
 let limit = calculateLimit();
 
+function debounce(func, delay = 250) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+
 function calculateLimit() {
   const width = window.innerWidth;
   if (width < 768) return 6;
@@ -33,10 +43,8 @@ async function loadAndDisplayRecipes(page = 1) {
       .map(recipe => {
         const ratingValue = (recipe.rating / 5) * 100;
         const isActive = isFavorite(recipe._id) ? 'active' : '';
-
         return `
         <div class="recipe-card" data-id="${recipe._id}">
-          {/* Kontrol sonucuna göre 'active' sınıfını butona ekle */}
           <button class="heart-btn ${isActive}" aria-label="Add to favorites">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -64,19 +72,6 @@ async function loadAndDisplayRecipes(page = 1) {
       .join('');
 
     recipesContainer.innerHTML = recipesMarkup;
-    recipesContainer.onclick = function (event) {
-      const heartBtn = event.target.closest('.heart-btn');
-      if (!heartBtn) return;
-
-      const recipeCard = heartBtn.closest('.recipe-card');
-      const recipeId = recipeCard.dataset.id;
-
-      const recipe = recipes.find(r => r._id === recipeId);
-      if (!recipe) return;
-      toggleFavorite(recipe);
-      heartBtn.classList.toggle('active');
-    };
-
     renderPagination(totalPages, page);
   } catch (error) {
     console.error('An error occurred while loading recipes:', error);
@@ -86,35 +81,88 @@ async function loadAndDisplayRecipes(page = 1) {
   }
 }
 
-function renderPagination(total, current) {
-  let buttonsMarkup = '';
+paginationContainer.addEventListener('click', event => {
+  const btn = event.target.closest('.pagination-btn');
+  if (!btn || btn.disabled || !btn.dataset.page) return;
 
-  for (let i = 1; i <= total; i++) {
-    buttonsMarkup += `<button class="pagination-btn ${
-      i === current ? 'active' : ''
-    }" data-page="${i}">${i}</button>`;
+  const selectedPage = Number(btn.dataset.page);
+  if (selectedPage !== currentPage) {
+    currentPage = selectedPage;
+    loadAndDisplayRecipes(currentPage);
   }
+});
 
-  paginationContainer.innerHTML = buttonsMarkup;
+recipesContainer.addEventListener('click', event => {
+  const heartBtn = event.target.closest('.heart-btn');
+  if (!heartBtn) return;
 
-  const allButtons = paginationContainer.querySelectorAll('.pagination-btn');
-  allButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const selectedPage = Number(btn.dataset.page);
-      if (selectedPage !== currentPage) {
-        currentPage = selectedPage;
-        loadAndDisplayRecipes(currentPage);
-      }
-    });
-  });
+  const recipeCard = heartBtn.closest('.recipe-card');
+  const recipeId = recipeCard.dataset.id;
+  toggleFavorite({ _id: recipeId });
+  heartBtn.classList.toggle('active');
+});
+
+function renderPagination(totalPages, currentPage) {
+  let markup = '';
+  const pagesToShow = 1;
+  const arrowClassesPrev = 'pagination-btn arrow-btn arrow-prev';
+  const arrowClassesNext = 'pagination-btn arrow-btn arrow-next';
+  markup += `<button class="${arrowClassesPrev}" data-page="1" ${
+    currentPage === 1 ? 'disabled' : ''
+  }>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+  </button>`;
+  markup += `<button class="${arrowClassesPrev}" data-page="${
+    currentPage - 1
+  }" ${currentPage === 1 ? 'disabled' : ''}>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+  </button>`;
+  if (totalPages > 1) {
+    if (currentPage > pagesToShow + 2) {
+      markup += `<button class="pagination-btn page-btn" data-page="1">1</button>`;
+      markup += `<button class="pagination-btn dots">...</button>`;
+    }
+    for (
+      let i = Math.max(1, currentPage - pagesToShow);
+      i <= Math.min(totalPages, currentPage + pagesToShow);
+      i++
+    ) {
+      if (i === 1 && currentPage > pagesToShow + 2) continue;
+      if (i === totalPages && currentPage < totalPages - pagesToShow - 1)
+        continue;
+
+      markup += `<button class="pagination-btn page-btn ${
+        i === currentPage ? 'active' : ''
+      }" data-page="${i}">${i}</button>`;
+    }
+    if (currentPage < totalPages - pagesToShow - 1) {
+      markup += `<button class="pagination-btn dots">...</button>`;
+      markup += `<button class="pagination-btn page-btn" data-page="${totalPages}">${totalPages}</button>`;
+    }
+  }
+  markup += `<button class="${arrowClassesNext}" data-page="${
+    currentPage + 1
+  }" ${currentPage === totalPages ? 'disabled' : ''}>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+  </button>`;
+  markup += `<button class="${arrowClassesNext}" data-page="${totalPages}" ${
+    currentPage === totalPages ? 'disabled' : ''
+  }>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+  </button>`;
+
+  paginationContainer.innerHTML = markup;
 }
 
-window.addEventListener('resize', () => {
+const handleResize = debounce(() => {
   const newLimit = calculateLimit();
   if (newLimit !== limit) {
+    console.log(`Resize detected. New limit: ${newLimit}. Refetching...`);
     currentPage = 1;
     loadAndDisplayRecipes(currentPage);
   }
 });
+
+window.addEventListener('resize', handleResize);
 
 loadAndDisplayRecipes();
