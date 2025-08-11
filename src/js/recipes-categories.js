@@ -3,7 +3,7 @@ import { fetchFilteredRecipes, fetchCategories } from '../api/tastyTreatsApi.js'
 const recipesContainer = document.querySelector('#recipes-container');
 const paginationContainer = document.querySelector('#pagination');
 const categoryList = document.querySelector('#category-list');
-const allCategoriesBtn = document.querySelector('.categories-box'); // DÜZENLENDİ
+const allCategoriesBtn = document.querySelector('.categories-box');
 
 let currentPage = 1;
 let totalPages = 1;
@@ -46,11 +46,9 @@ async function loadCategories() {
           selectedCategory = newCategory;
           currentPage = 1;
 
-          // Aktif class'ları temizle
           categoryButtons.forEach(b => b.classList.remove('active'));
           allCategoriesBtn.classList.remove('active');
 
-          // Seçilen kategoriyi aktif yap
           btn.classList.add('active');
 
           loadAndDisplayRecipes(currentPage);
@@ -62,14 +60,12 @@ async function loadCategories() {
   }
 }
 
-// All categories butonuna click eventi
 if (allCategoriesBtn) {
   allCategoriesBtn.addEventListener('click', () => {
     if (selectedCategory !== null) {
       selectedCategory = null;
       currentPage = 1;
 
-      // Aktif class'ları temizle
       const categoryButtons = categoryList.querySelectorAll('.category-btn');
       categoryButtons.forEach(btn => btn.classList.remove('active'));
 
@@ -109,9 +105,7 @@ async function loadAndDisplayRecipes(page = 1) {
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
           </button>
-          <img class="recipe-card-image" src="${recipe.thumb}" alt="${
-          recipe.title
-        }" loading="lazy">
+          <img class="recipe-card-image" src="${recipe.thumb}" alt="${recipe.title}" loading="lazy">
           <div class="recipe-card-details">
             <h3 class="recipe-card-title">${recipe.title}</h3>
             <p class="recipe-card-description">${recipe.description}</p>
@@ -130,9 +124,16 @@ async function loadAndDisplayRecipes(page = 1) {
       })
       .join('');
 
+    // Burada recipes-list sarmalayıcısını koyuyoruz:
+    recipesContainer.innerHTML = `<div class="recipes-list">${recipesMarkup}</div>`;
 
-    recipesContainer.innerHTML = recipesMarkup;
     renderPagination(totalPages, page);
+
+    if (selectedCategory) {
+      recipesContainer.classList.add('category-selected');
+    } else {
+      recipesContainer.classList.remove('category-selected');
+    }
   } catch (error) {
     console.error('An error occurred while loading recipes:', error);
     recipesContainer.innerHTML =
@@ -169,6 +170,8 @@ window.addEventListener('resize', () => {
   }
 });
 
-// İlk yükleme
+if (allCategoriesBtn) allCategoriesBtn.classList.add('active');
+
+
 loadCategories();
 loadAndDisplayRecipes();
