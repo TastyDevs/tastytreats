@@ -1,19 +1,10 @@
 // recipes-filter.js
-
-// --- API'yi dinamik yükle ---
-let fetchFilteredRecipes, fetchAreas, fetchIngredients;
-async function loadApi() {
-  const candidates = ['../api/tastyTreatsApi.js'];
-  for (const spec of candidates) {
-    try {
-      const m = await import(spec);
-      ({ fetchFilteredRecipes, fetchAreas, fetchIngredients } = m);
-      console.log('[filters] API loaded from', spec);
-      return;
-    } catch (_) {}
-  }
-  throw new Error('API module not found. Check tastyTreatsApi.js path.');
-}
+// --- API'yi direkt import et ---
+import {
+  fetchFilteredRecipes,
+  fetchAreas,
+  fetchIngredients,
+} from '../api/tastyTreatsApi.js';
 
 // ---- Elementler
 const root = document.querySelector('.filters');
@@ -31,6 +22,7 @@ const el = {
   dropdowns: [...(root?.querySelectorAll('.custom-dropdown') ?? [])],
   recipes: document.getElementById('recipes-flex'), // bizim grid
 };
+
 // Kategoriler modunun alanları (native)
 const native = {
   grid: document.getElementById('recipes-container'),
@@ -60,6 +52,7 @@ function setLoading(isLoading) {
   if (isLoading)
     el.recipes.innerHTML = `<div class="recipes-loading">Loading...</div>`;
 }
+
 const FETCH_TIMEOUT_MS = 10000;
 const withTimeout = (p, ms = FETCH_TIMEOUT_MS) =>
   Promise.race([
@@ -104,6 +97,226 @@ function showNativeMode() {
   if (native.grid) native.grid.style.display = '';
   if (native.pagination) native.pagination.style.display = '';
   document.dispatchEvent(new CustomEvent('filters:deactivate'));
+}
+
+/* ---------- Rendererlar ---------- */
+function renderPagination(totalPages, currentPage) {
+  if (!paginationContainer) return;
+
+  totalPages = Math.max(1, Number(totalPages) || 1);
+  currentPage = Math.min(totalPages, Math.max(1, Number(currentPage) || 1));
+
+  const pagesToShow = 1;
+  const arrowClassesPrev = 'pagination-btn arrow-btn arrow-prev';
+  const arrowClassesNext = 'pagination-btn arrow-btn arrow-next';
+
+  let markup = `
+    <button class="${arrowClassesPrev}" data-page="1" ${
+    currentPage === 1 ? 'disabled' : ''
+  }>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+    </button>
+    <button class="${arrowClassesPrev}" data-page="${currentPage - 1}" ${
+    currentPage === 1 ? 'disabled' : ''
+  }>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+  `;
+
+  if (totalPages > 1) {
+    if (currentPage > pagesToShow + 2) {
+      markup += `<button class="pagination-btn page-btn" data-page="1">1</button>`;
+      markup += `<button class="pagination-btn dots" disabled>...</button>`;
+    }
+
+    for (
+      let i = Math.max(1, currentPage - pagesToShow);
+      i <= Math.min(totalPages, currentPage + pagesToShow);
+      i++
+    ) {
+      if (i === 1 && currentPage > pagesToShow + 2) continue;
+      if (i === totalPages && currentPage < totalPages - pagesToShow - 1)
+        continue;
+
+      markup += `<button class="pagination-btn page-btn ${
+        i === currentPage ? 'active' : ''
+      }" data-page="${i}">${i}</button>`;
+    }
+
+    if (currentPage < totalPages - pagesToShow - 1) {
+      markup += `<button class="pagination-btn dots" disabled>...</button>`;
+      markup += `<button class="pagination-btn page-btn" data-page="${totalPages}">${totalPages}</button>`;
+    }
+  }
+
+  markup += `
+    <button class="${arrowClassesNext}" data-page="${currentPage + 1}" ${
+    currentPage === totalPages ? 'disabled' : ''
+  }>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+    <button class="${arrowClassesNext}" data-page="${totalPages}" ${
+    currentPage === totalPages ? 'disabled' : ''
+  }>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+    </button>
+  `;
+
+  paginationContainer.innerHTML = totalPages <= 1 ? '' : markup;
+}
+
+function renderRecipes(items) {
+  if (!el.recipes) return;
+  if (!items?.length) {
+    el.recipes.innerHTML = '';
+    return;
+  }
+
+  const html = items
+    .map(rec => {
+      const {
+        _id,
+        title = 'Untitled',
+        description = '',
+        rating = 0,
+        preview,
+        thumb,
+      } = rec;
+
+      const img = preview || thumb || '';
+      const safeTitle = escapeHtml(title);
+      const safeDesc = escapeHtml(description);
+      const ratingNum = Number(rating) || 0;
+      const ratingPct = Math.max(0, Math.min(100, (ratingNum / 5) * 100));
+
+      return `
+      <div class="recipe-card" data-id="${_id || ''}">
+        <button class="heart-btn" aria-label="Add to favorites">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+               viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </button>
+
+        ${
+          img
+            ? `<img class="recipe-card-image" src="${img}" alt="${safeTitle}" loading="lazy">`
+            : ''
+        }
+
+        <div class="recipe-card-details">
+          <h3 class="recipe-card-title">${safeTitle}</h3>
+          ${
+            safeDesc ? `<p class="recipe-card-description">${safeDesc}</p>` : ''
+          }
+
+          <div class="recipe-card-footer">
+            <div class="recipe-card-rating">
+              <span class="rating-value">${ratingNum.toFixed(1)}</span>
+              <div class="rating-stars" style="--rating:${ratingPct}%">
+                <span>★★★★★</span>
+                <span class="stars-filled">★★★★★</span>
+              </div>
+            </div>
+            <button class="recipe-card-button" type="button">See recipe</button>
+          </div>
+        </div>
+      </div>`;
+    })
+    .join('');
+
+  el.recipes.innerHTML = html;
+}
+
+/* ---------- FETCH + RENDER (önce tanımlı!) ---------- */
+async function applyFilters() {
+  try {
+    // Filtre/arama yoksa native liste/paginasyon açık kalsın; fetch yapma
+    if (!isFiltersActive()) {
+      showNativeMode();
+      return;
+    }
+
+    showFiltersMode();
+    setLoading(true);
+
+    const { time, area, ingredient, page, limit } = state;
+    const data = await withTimeout(
+      fetchFilteredRecipes({ time, area, ingredient, page, limit })
+    );
+
+    const list = Array.isArray(data?.results)
+      ? data.results
+      : Array.isArray(data)
+      ? data
+      : Array.isArray(data?.recipes)
+      ? data.recipes
+      : [];
+
+    const q = state.query.toLowerCase();
+    const filtered = q
+      ? list.filter(r =>
+          String(r.title || '')
+            .toLowerCase()
+            .includes(q)
+        )
+      : list;
+
+    if (USE_LOCAL_RENDER) {
+      renderRecipes(filtered);
+
+      // Pagination hesapla ve çiz
+      if (paginationContainer) {
+        const apiTotalPages =
+          Number(data?.totalPages) || Number(data?.pageCount) || 0;
+
+        const totalItems =
+          Number(data?.total) ||
+          Number(data?.count) ||
+          Number(data?.resultsCount) ||
+          Number(data?.hits) ||
+          (Array.isArray(data?.results) ? data.results.length : 0);
+
+        const totalPages =
+          apiTotalPages ||
+          Math.max(
+            1,
+            Math.ceil((totalItems || filtered.length) / (limit || 6))
+          );
+
+        renderPagination(totalPages, state.page);
+      }
+
+      if (!filtered.length && el.recipes)
+        el.recipes.innerHTML = '<p class="no-results">No recipes found</p>';
+    }
+
+    document.dispatchEvent(
+      new CustomEvent('recipes:filtered', {
+        detail: { recipes: filtered, paging: { page, limit }, raw: data },
+      })
+    );
+  } catch (err) {
+    console.error('[filters] applyFilters error:', err?.message || err);
+    if (USE_LOCAL_RENDER && el.recipes) {
+      el.recipes.innerHTML =
+        err?.message === 'REQUEST_TIMEOUT'
+          ? `<p class="no-results">İstek zaman aşımına uğradı. Lütfen tekrar deneyin.</p>`
+          : `<p class="no-results">Bir şeyler ters gitti. Lütfen tekrar deneyin.</p>`;
+    }
+    document.dispatchEvent(
+      new CustomEvent('recipes:filtered', {
+        detail: {
+          recipes: [],
+          error: true,
+          reason: err?.message || String(err),
+        },
+      })
+    );
+  } finally {
+    setLoading(false); // DOM'u silmiyor
+  }
 }
 
 /* ---------- Dropdownlar ---------- */
@@ -232,226 +445,6 @@ function initReset() {
   });
 }
 
-/* ---------- Pagination Renderer (bu dosyada!) ---------- */
-function renderPagination(totalPages, currentPage) {
-  if (!paginationContainer) return;
-
-  totalPages = Math.max(1, Number(totalPages) || 1);
-  currentPage = Math.min(totalPages, Math.max(1, Number(currentPage) || 1));
-
-  const pagesToShow = 1;
-  const arrowClassesPrev = 'pagination-btn arrow-btn arrow-prev';
-  const arrowClassesNext = 'pagination-btn arrow-btn arrow-next';
-
-  let markup = `
-    <button class="${arrowClassesPrev}" data-page="1" ${
-    currentPage === 1 ? 'disabled' : ''
-  }>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
-    </button>
-    <button class="${arrowClassesPrev}" data-page="${currentPage - 1}" ${
-    currentPage === 1 ? 'disabled' : ''
-  }>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-    </button>
-  `;
-
-  if (totalPages > 1) {
-    if (currentPage > pagesToShow + 2) {
-      markup += `<button class="pagination-btn page-btn" data-page="1">1</button>`;
-      markup += `<button class="pagination-btn dots" disabled>...</button>`;
-    }
-
-    for (
-      let i = Math.max(1, currentPage - pagesToShow);
-      i <= Math.min(totalPages, currentPage + pagesToShow);
-      i++
-    ) {
-      if (i === 1 && currentPage > pagesToShow + 2) continue;
-      if (i === totalPages && currentPage < totalPages - pagesToShow - 1)
-        continue;
-
-      markup += `<button class="pagination-btn page-btn ${
-        i === currentPage ? 'active' : ''
-      }" data-page="${i}">${i}</button>`;
-    }
-
-    if (currentPage < totalPages - pagesToShow - 1) {
-      markup += `<button class="pagination-btn dots" disabled>...</button>`;
-      markup += `<button class="pagination-btn page-btn" data-page="${totalPages}">${totalPages}</button>`;
-    }
-  }
-
-  markup += `
-    <button class="${arrowClassesNext}" data-page="${currentPage + 1}" ${
-    currentPage === totalPages ? 'disabled' : ''
-  }>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-    </button>
-    <button class="${arrowClassesNext}" data-page="${totalPages}" ${
-    currentPage === totalPages ? 'disabled' : ''
-  }>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
-    </button>
-  `;
-
-  paginationContainer.innerHTML = totalPages <= 1 ? '' : markup;
-}
-
-/* ---------- Fetch + render ---------- */
-async function applyFilters() {
-  try {
-    // Filtre/arama yoksa native liste/paginasyon açık kalsın; fetch yapma
-    if (!isFiltersActive()) {
-      showNativeMode();
-      return;
-    }
-
-    showFiltersMode();
-    setLoading(true);
-
-    const { time, area, ingredient, page, limit } = state;
-    const data = await withTimeout(
-      fetchFilteredRecipes({ time, area, ingredient, page, limit })
-    );
-
-    const list = Array.isArray(data?.results)
-      ? data.results
-      : Array.isArray(data)
-      ? data
-      : Array.isArray(data?.recipes)
-      ? data.recipes
-      : [];
-
-    const q = state.query.toLowerCase();
-    const filtered = q
-      ? list.filter(r =>
-          String(r.title || '')
-            .toLowerCase()
-            .includes(q)
-        )
-      : list;
-
-    if (USE_LOCAL_RENDER) {
-      renderRecipes(filtered);
-
-      // Pagination hesapla ve çiz
-      if (paginationContainer) {
-        const apiTotalPages =
-          Number(data?.totalPages) || Number(data?.pageCount) || 0;
-
-        const totalItems =
-          Number(data?.total) ||
-          Number(data?.count) ||
-          Number(data?.resultsCount) ||
-          Number(data?.hits) ||
-          (Array.isArray(data?.results) ? data.results.length : 0);
-
-        const totalPages =
-          apiTotalPages ||
-          Math.max(
-            1,
-            Math.ceil((totalItems || filtered.length) / (limit || 6))
-          );
-
-        renderPagination(totalPages, state.page);
-      }
-
-      if (!filtered.length && el.recipes)
-        el.recipes.innerHTML = '<p class="no-results">No recipes found</p>';
-    }
-
-    document.dispatchEvent(
-      new CustomEvent('recipes:filtered', {
-        detail: { recipes: filtered, paging: { page, limit }, raw: data },
-      })
-    );
-  } catch (err) {
-    console.error('[filters] applyFilters error:', err?.message || err);
-    if (USE_LOCAL_RENDER && el.recipes) {
-      el.recipes.innerHTML =
-        err?.message === 'REQUEST_TIMEOUT'
-          ? `<p class="no-results">İstek zaman aşımına uğradı. Lütfen tekrar deneyin.</p>`
-          : `<p class="no-results">Bir şeyler ters gitti. Lütfen tekrar deneyin.</p>`;
-    }
-    document.dispatchEvent(
-      new CustomEvent('recipes:filtered', {
-        detail: {
-          recipes: [],
-          error: true,
-          reason: err?.message || String(err),
-        },
-      })
-    );
-  } finally {
-    setLoading(false); // DOM'u silmiyor
-  }
-}
-
-function renderRecipes(items) {
-  if (!el.recipes) return;
-  if (!items?.length) {
-    el.recipes.innerHTML = '';
-    return;
-  }
-
-  const html = items
-    .map(rec => {
-      const {
-        _id,
-        title = 'Untitled',
-        description = '',
-        rating = 0,
-        preview,
-        thumb,
-      } = rec;
-
-      const img = preview || thumb || '';
-      const safeTitle = escapeHtml(title);
-      const safeDesc = escapeHtml(description);
-      const ratingNum = Number(rating) || 0;
-      const ratingPct = Math.max(0, Math.min(100, (ratingNum / 5) * 100));
-
-      return `
-      <div class="recipe-card" data-id="${_id || ''}">
-        <button class="heart-btn" aria-label="Add to favorites">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-               viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-          </svg>
-        </button>
-
-        ${
-          img
-            ? `<img class="recipe-card-image" src="${img}" alt="${safeTitle}" loading="lazy">`
-            : ''
-        }
-
-        <div class="recipe-card-details">
-          <h3 class="recipe-card-title">${safeTitle}</h3>
-          ${
-            safeDesc ? `<p class="recipe-card-description">${safeDesc}</p>` : ''
-          }
-
-          <div class="recipe-card-footer">
-            <div class="recipe-card-rating">
-              <span class="rating-value">${ratingNum.toFixed(1)}</span>
-              <div class="rating-stars" style="--rating:${ratingPct}%">
-                <span>★★★★★</span>
-                <span class="stars-filled">★★★★★</span>
-              </div>
-            </div>
-            <button class="recipe-card-button" type="button">See recipe</button>
-          </div>
-        </div>
-      </div>`;
-    })
-    .join('');
-
-  el.recipes.innerHTML = html;
-}
-
 /* ---------- Başlat ---------- */
 (async function init() {
   try {
@@ -461,7 +454,6 @@ function renderRecipes(items) {
     }
     if (paginationContainer) paginationContainer.style.display = 'none';
 
-    await loadApi();
     await initDropdowns();
     initSearch();
     initReset();
