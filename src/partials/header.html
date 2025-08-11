@@ -1,21 +1,24 @@
 <header class="header">
-  <div class="container">
-    <nav class="nav">
-      <a class="nav-logo" href="./index.html" aria-label="Site logo">
-        <svg class="nav-logo-icon" width="100" height="30">
-          <use href="{=$icon-path}"></use>
-        </svg>
-      </a>
-      <ul class="nav-list">
-        <li class="nav-item">
-          <a class="nav-link {=$highlight-act}" href="./index.html">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {=$highlight-curr}" href="./favorites.html"
-            >Favorites</a
-          >
-        </li>
-      </ul>
-    </nav>
+  <div class="container header-container">
+    <div class="logo">
+      tasty<span class="tasty">treats.</span>
+    </div>
+
+    <div class="header-icons">
+      <img src="./img/shopping-cart.svg" alt="Cart" class="cart-icon" />
+      <img src="./img/align-justify.svg" id="menu-icon"/>
+    </div>
   </div>
 </header>
+
+<nav class="nav-menu" id="nav-menu">
+  <img src="./img/x.svg" class="nav-close-btn" id="nav-close-btn" aria-label="Close menu"/>
+  <a href="#">Home</a>
+  <a href="#">Favorites</a>
+  <button class="theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle theme">
+xx
+  </button>
+</nav>
+
+
+<script type="module" src="./js/header.js"></script>
