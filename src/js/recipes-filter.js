@@ -2,7 +2,7 @@ let fetchFilteredRecipes, fetchAreas, fetchIngredients;
 
 async function loadApi() {
   const candidates = [
-    '../api/tastyTreatsApi.js', // js -> api
+    './api/tastyTreatsApi.js', // js -> api
   ];
   for (const spec of candidates) {
     try {
