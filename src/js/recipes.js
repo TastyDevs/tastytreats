@@ -3,6 +3,7 @@ import { toggleFavorite, isFavorite } from '../utils/localFavorites.js';
 
 const recipesContainer = document.querySelector('#recipes-container');
 const paginationContainer = document.querySelector('#pagination');
+
 let currentRecipes = [];
 
 let currentPage = 1;
@@ -86,7 +87,6 @@ async function loadAndDisplayRecipes(page = 1) {
 paginationContainer.addEventListener('click', event => {
   const btn = event.target.closest('.pagination-btn');
   if (!btn || btn.disabled || !btn.dataset.page) return;
-
   const selectedPage = Number(btn.dataset.page);
   if (selectedPage !== currentPage) {
     currentPage = selectedPage;
@@ -103,18 +103,10 @@ recipesContainer.addEventListener('click', event => {
   const recipe = currentRecipes.find(r => r._id === recipeId);
 
   if (!recipe) return;
-  e;
+
   toggleFavorite(recipe);
-  const isNowFavorite = isFavorite(recipeId);
-  if (isNowFavorite) {
-    heartBtn.classList.add('active');
-    console.log('[FINAL FIX] Recipe is now a favorite. ADDING active class.');
-  } else {
-    heartBtn.classList.remove('active');
-    console.log(
-      '[FINAL FIX] Recipe is no longer a favorite. REMOVING active class.'
-    );
-  }
+
+  heartBtn.classList.toggle('active');
 });
 
 function renderPagination(totalPages, currentPage) {
