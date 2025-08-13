@@ -97,25 +97,14 @@ paginationContainer.addEventListener('click', event => {
 recipesContainer.addEventListener('click', event => {
   const heartBtn = event.target.closest('.heart-btn');
   if (!heartBtn) return;
-
-  console.log('Heart button clicked on deployed site!');
-
   const recipeCard = heartBtn.closest('.recipe-card');
   const recipeId = recipeCard.dataset.id;
-
   const recipe = currentRecipes.find(r => r._id === recipeId);
-
-  if (!recipe) {
-    console.error('Recipe object NOT FOUND for ID:', recipeId);
-    return;
-  }
-
-  console.log('Recipe found:', recipe.title);
-
+  if (!recipe) return;
   toggleFavorite(recipe);
-
-  console.log("About to toggle 'active' class on element:", heartBtn);
-  heartBtn.classList.toggle('active');
+  requestAnimationFrame(() => {
+    heartBtn.classList.toggle('active');
+  });
 });
 
 function renderPagination(totalPages, currentPage) {
