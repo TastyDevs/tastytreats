@@ -5,8 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Favorites</title>
-    <link rel="stylesheet" crossorigin href="/tastytreats/assets/favorites-DblS5UDu.css">
-    <link rel="stylesheet" crossorigin href="/tastytreats/assets/styles-jonoEAai.css">
+    <script type="module" crossorigin src="/tastytreats/favorites.js"></script>
+    <link rel="modulepreload" crossorigin href="/tastytreats/assets/tastyTreatsApi-D_6eBPKE.js">
+    <link rel="stylesheet" crossorigin href="/tastytreats/assets/tastyTreatsApi-BnCuvpuE.css">
+    <link rel="stylesheet" crossorigin href="/tastytreats/assets/favorites-xhTjv94w.css">
   </head>
   <body>
     <header class="header">
@@ -34,17 +36,24 @@
 
     <main>
       <div class="container">
-        <div class="favorites-hero"></div>
-        <div class="favorites-placeholder">
-          <svg class="placeholder-icon">
-            <use href="/tastytreats/assets/sprite-ByRoohhG.svg#icon-chef-cap"></use>
-          </svg>
-          <p class="favorites-placeholder-text">
-            It appears that you haven't added any recipes to your favorites yet.
-            To get started, you can add recipes that you like to your favorites
-            for easier access in the future.
-          </p>
-        </div>
+
+<section class="favorite-recipes-section">
+  <div class="favorites-hero"></div>
+  <div id="favorite-recipes-container" class="favorite-recipes-list"></div>
+  <div class="favorites-placeholder">
+    <svg class="placeholder-icon">
+      <use href="/tastytreats/assets/sprite-ByRoohhG.svg#icon-chef-cap"></use>
+    </svg>
+    <p class="favorites-placeholder-text">
+      It appears that you haven't added any recipes to your favorites yet. To
+      get started, you can add recipes that you like to your favorites for
+      easier access in the future.
+    </p>
+  </div>
+  <div id="pagination" class="pagination"></div>
+</section>
+
+
       </div>
     </main>
 
@@ -63,6 +72,7 @@
     </p>
   </div>
 </footer>
+
 
   </body>
 </html>
