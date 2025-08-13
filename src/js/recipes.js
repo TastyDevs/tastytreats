@@ -97,13 +97,53 @@ paginationContainer.addEventListener('click', event => {
 recipesContainer.addEventListener('click', event => {
   const heartBtn = event.target.closest('.heart-btn');
   if (!heartBtn) return;
+
+  // TEST 1: Tıklama olayının çalıştığını doğrula
+  console.log('[DEBUG] Heart button was clicked.');
+
   const recipeCard = heartBtn.closest('.recipe-card');
   const recipeId = recipeCard.dataset.id;
+
+  // TEST 2: ID'nin doğru alınıp alınmadığını kontrol et
+  console.log(`[DEBUG] Found Recipe ID: ${recipeId}`);
+
+  // TEST 3: Tıklama anında `currentRecipes` dizisinin dolu olup olmadığını kontrol et
+  // Eğer bu dizi boşsa, en büyük sorunumuz budur.
+  console.log('[DEBUG] Searching for recipe in this array:', currentRecipes);
+
   const recipe = currentRecipes.find(r => r._id === recipeId);
-  if (!recipe) return;
+
+  if (!recipe) {
+    console.error(
+      '[DEBUG] FATAL ERROR: Recipe object was NOT FOUND in currentRecipes array.'
+    );
+    return;
+  }
+
+  // TEST 4: Tarifin doğru bulunduğunu ve verinin tam olduğunu doğrula
+  console.log('[DEBUG] Recipe found successfully:', recipe);
+
+  // TEST 5: `toggleFavorite` öncesi localStorage'ın durumunu yazdır
+  console.log(
+    '[DEBUG] localStorage (before toggle):',
+    localStorage.getItem('favoriteRecipes')
+  );
   toggleFavorite(recipe);
+  console.log(
+    '[DEBUG] localStorage (after toggle):',
+    localStorage.getItem('favoriteRecipes')
+  );
+
+  // TEST 6: Görsel güncellemeyi dene
+  console.log('[DEBUG] Attempting to toggle class on element:', heartBtn);
+
+  // Önceki denememiz. Bunu da çalıştırıyoruz.
   requestAnimationFrame(() => {
     heartBtn.classList.toggle('active');
+    console.log(
+      '[DEBUG] Toggled class via requestAnimationFrame. Final classes:',
+      heartBtn.className
+    );
   });
 });
 
