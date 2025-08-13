@@ -10,21 +10,34 @@ let currentPage = 1;
 let totalPages = 1;
 let limit = calculateLimit();
 
-function debounce(func, delay = 250) {
-  let timeoutId;
-  return function (...args) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      func.apply(this, args);
-    }, delay);
-  };
-}
-
-function calculateLimit() {
-  const width = window.innerWidth;
-  if (width < 768) return 6;
-  if (width < 1280) return 8;
-  return 9;
+function createRecipeCardMarkup(recipe) {
+  const ratingValue = (recipe.rating / 5) * 100;
+  const isActive = isFavorite(recipe._id) ? 'active' : '';
+  return `
+    <div class="recipe-card" data-id="${recipe._id}">
+      <button class="heart-btn ${isActive}" aria-label="Add to favorites">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+      </button>
+      <img class="recipe-card-image" src="${recipe.thumb}" alt="${
+    recipe.title
+  }" loading="lazy">
+      <div class="recipe-card-details">
+        <h3 class="recipe-card-title">${recipe.title}</h3>
+        <p class="recipe-card-description">${recipe.description}</p>
+        <div class="recipe-card-footer">
+          <div class="recipe-card-rating">
+            <span class="rating-value">${recipe.rating.toFixed(1)}</span>
+            <div class="rating-stars" style="--rating: ${ratingValue}%">
+              <span>★★★★★</span>
+              <span class="stars-filled">★★★★★</span>
+            </div>
+          </div>
+          <button class="recipe-card-button" type="button">See recipe</button>
+        </div>
+      </div>
+    </div>`;
 }
 
 async function loadAndDisplayRecipes(page = 1) {
@@ -43,35 +56,7 @@ async function loadAndDisplayRecipes(page = 1) {
     }
 
     const recipesMarkup = currentRecipes
-      .map(recipe => {
-        const ratingValue = (recipe.rating / 5) * 100;
-        const isActive = isFavorite(recipe._id) ? 'active' : '';
-        return `
-        <div class="recipe-card" data-id="${recipe._id}">
-          <button class="heart-btn ${isActive}" aria-label="Add to favorites">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
-          </button>
-          <img class="recipe-card-image" src="${recipe.thumb}" alt="${
-          recipe.title
-        }" loading="lazy">
-          <div class="recipe-card-details">
-            <h3 class="recipe-card-title">${recipe.title}</h3>
-            <p class="recipe-card-description">${recipe.description}</p>
-            <div class="recipe-card-footer">
-              <div class="recipe-card-rating">
-                <span class="rating-value">${recipe.rating.toFixed(1)}</span>
-                <div class="rating-stars" style="--rating: ${ratingValue}%">
-                  <span>★★★★★</span>
-                  <span class="stars-filled">★★★★★</span>
-                </div>
-              </div>
-              <button class="recipe-card-button" type="button">See recipe</button>
-            </div>
-          </div>
-        </div>`;
-      })
+      .map(recipe => createRecipeCardMarkup(recipe))
       .join('');
 
     recipesContainer.innerHTML = recipesMarkup;
@@ -83,16 +68,6 @@ async function loadAndDisplayRecipes(page = 1) {
     paginationContainer.innerHTML = '';
   }
 }
-
-paginationContainer.addEventListener('click', event => {
-  const btn = event.target.closest('.pagination-btn');
-  if (!btn || btn.disabled || !btn.dataset.page) return;
-  const selectedPage = Number(btn.dataset.page);
-  if (selectedPage !== currentPage) {
-    currentPage = selectedPage;
-    loadAndDisplayRecipes(currentPage);
-  }
-});
 
 recipesContainer.addEventListener('click', event => {
   const heartBtn = event.target.closest('.heart-btn');
@@ -106,7 +81,18 @@ recipesContainer.addEventListener('click', event => {
 
   toggleFavorite(recipe);
 
-  heartBtn.classList.toggle('active');
+  const newCardMarkup = createRecipeCardMarkup(recipe);
+  recipeCard.outerHTML = newCardMarkup;
+});
+
+paginationContainer.addEventListener('click', event => {
+  const btn = event.target.closest('.pagination-btn');
+  if (!btn || btn.disabled || !btn.dataset.page) return;
+  const selectedPage = Number(btn.dataset.page);
+  if (selectedPage !== currentPage) {
+    currentPage = selectedPage;
+    loadAndDisplayRecipes(currentPage);
+  }
 });
 
 function renderPagination(totalPages, currentPage) {
@@ -164,5 +150,19 @@ const handleResize = debounce(() => {
 });
 
 window.addEventListener('resize', handleResize);
-
 loadAndDisplayRecipes();
+function debounce(func, delay = 250) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+function calculateLimit() {
+  const width = window.innerWidth;
+  if (width < 768) return 6;
+  if (width < 1280) return 8;
+  return 9;
+}
