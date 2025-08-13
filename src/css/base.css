@@ -218,7 +218,7 @@ main:has(.back-link) {
 
 .recipe-text {
   font-size: 12px;
-  line-height: 1.33;
+  line-height: 16px;
   color: var(--white-smoke);
 }
 
@@ -341,9 +341,7 @@ main:has(.back-link) {
 }
 
 .see-recipe-btn:hover {
-  color: var(--onyx);
-  border-color: var(--pistachio);
-  background-color: transparent;
+  background-color: #8bb975;
 }
 
 /* Tüm dropdown panelleri için temel görünüm */
