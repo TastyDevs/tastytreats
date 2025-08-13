@@ -3,6 +3,7 @@ import { toggleFavorite, isFavorite } from '../utils/localFavorites.js';
 
 const recipesContainer = document.querySelector('#recipes-container');
 const paginationContainer = document.querySelector('#pagination');
+let currentRecipes = [];
 
 let currentPage = 1;
 let totalPages = 1;
@@ -29,17 +30,18 @@ async function loadAndDisplayRecipes(page = 1) {
   try {
     limit = calculateLimit();
     const response = await fetchFilteredRecipes({ page, limit });
-    const recipes = response.results;
+    currentRecipes = response.results;
+
     totalPages =
       response.totalPages || Math.ceil(response.totalResults / limit);
 
-    if (!recipes || recipes.length === 0) {
+    if (!currentRecipes || currentRecipes.length === 0) {
       recipesContainer.innerHTML = '<p>No recipes found to display.</p>';
       paginationContainer.innerHTML = '';
       return;
     }
 
-    const recipesMarkup = recipes
+    const recipesMarkup = currentRecipes
       .map(recipe => {
         const ratingValue = (recipe.rating / 5) * 100;
         const isActive = isFavorite(recipe._id) ? 'active' : '';
@@ -98,7 +100,9 @@ recipesContainer.addEventListener('click', event => {
 
   const recipeCard = heartBtn.closest('.recipe-card');
   const recipeId = recipeCard.dataset.id;
-  toggleFavorite({ _id: recipeId });
+  const recipe = currentRecipes.find(r => r._id === recipeId);
+  if (!recipe) return;
+  toggleFavorite(recipe);
   heartBtn.classList.toggle('active');
 });
 
@@ -109,14 +113,12 @@ function renderPagination(totalPages, currentPage) {
   const arrowClassesNext = 'pagination-btn arrow-btn arrow-next';
   markup += `<button class="${arrowClassesPrev}" data-page="1" ${
     currentPage === 1 ? 'disabled' : ''
-  }>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
-  </button>`;
+  }><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg></button>`;
   markup += `<button class="${arrowClassesPrev}" data-page="${
     currentPage - 1
-  }" ${currentPage === 1 ? 'disabled' : ''}>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-  </button>`;
+  }" ${
+    currentPage === 1 ? 'disabled' : ''
+  }><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>`;
   if (totalPages > 1) {
     if (currentPage > pagesToShow + 2) {
       markup += `<button class="pagination-btn page-btn" data-page="1">1</button>`;
@@ -130,7 +132,6 @@ function renderPagination(totalPages, currentPage) {
       if (i === 1 && currentPage > pagesToShow + 2) continue;
       if (i === totalPages && currentPage < totalPages - pagesToShow - 1)
         continue;
-
       markup += `<button class="pagination-btn page-btn ${
         i === currentPage ? 'active' : ''
       }" data-page="${i}">${i}</button>`;
@@ -142,22 +143,18 @@ function renderPagination(totalPages, currentPage) {
   }
   markup += `<button class="${arrowClassesNext}" data-page="${
     currentPage + 1
-  }" ${currentPage === totalPages ? 'disabled' : ''}>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-  </button>`;
+  }" ${
+    currentPage === totalPages ? 'disabled' : ''
+  }><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>`;
   markup += `<button class="${arrowClassesNext}" data-page="${totalPages}" ${
     currentPage === totalPages ? 'disabled' : ''
-  }>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
-  </button>`;
-
+  }><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg></button>`;
   paginationContainer.innerHTML = markup;
 }
 
 const handleResize = debounce(() => {
   const newLimit = calculateLimit();
   if (newLimit !== limit) {
-    console.log(`Resize detected. New limit: ${newLimit}. Refetching...`);
     currentPage = 1;
     loadAndDisplayRecipes(currentPage);
   }
