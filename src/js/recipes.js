@@ -30,8 +30,7 @@ function createRecipeCardMarkup(recipe) {
           <div class="recipe-card-rating">
             <span class="rating-value">${recipe.rating.toFixed(1)}</span>
             <div class="rating-stars" style="--rating: ${ratingValue}%">
-              <span>★★★★★</span>
-              <span class="stars-filled">★★★★★</span>
+              <span>★★★★★</span><span class="stars-filled">★★★★★</span>
             </div>
           </div>
           <button class="recipe-card-button" type="button">See recipe</button>
@@ -40,26 +39,20 @@ function createRecipeCardMarkup(recipe) {
     </div>`;
 }
 
+function rerenderAllCards() {
+  if (!currentRecipes || currentRecipes.length === 0) return;
+  const recipesMarkup = currentRecipes.map(createRecipeCardMarkup).join('');
+  recipesContainer.innerHTML = recipesMarkup;
+}
+
 async function loadAndDisplayRecipes(page = 1) {
   try {
     limit = calculateLimit();
     const response = await fetchFilteredRecipes({ page, limit });
     currentRecipes = response.results;
-
     totalPages =
       response.totalPages || Math.ceil(response.totalResults / limit);
-
-    if (!currentRecipes || currentRecipes.length === 0) {
-      recipesContainer.innerHTML = '<p>No recipes found to display.</p>';
-      paginationContainer.innerHTML = '';
-      return;
-    }
-
-    const recipesMarkup = currentRecipes
-      .map(recipe => createRecipeCardMarkup(recipe))
-      .join('');
-
-    recipesContainer.innerHTML = recipesMarkup;
+    rerenderAllCards();
     renderPagination(totalPages, page);
   } catch (error) {
     console.error('An error occurred while loading recipes:', error);
@@ -76,13 +69,9 @@ recipesContainer.addEventListener('click', event => {
   const recipeCard = heartBtn.closest('.recipe-card');
   const recipeId = recipeCard.dataset.id;
   const recipe = currentRecipes.find(r => r._id === recipeId);
-
   if (!recipe) return;
-
   toggleFavorite(recipe);
-
-  const newCardMarkup = createRecipeCardMarkup(recipe);
-  recipeCard.outerHTML = newCardMarkup;
+  rerenderAllCards();
 });
 
 paginationContainer.addEventListener('click', event => {
