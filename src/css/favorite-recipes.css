@@ -1,7 +1,3 @@
-.hidden {
-  display: none;
-}
-
 .favorite-recipes-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(335px, 1fr));
@@ -181,4 +177,8 @@
   .categories-filter {
     width: 1080px;
   }
+}
+
+.hidden {
+  display: none;
 }

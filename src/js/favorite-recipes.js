@@ -104,40 +104,42 @@ function handleFavoriteRemoval(event) {
   const heartButton = event.target.closest('.favorite-heart-btn');
   if (!heartButton) return;
 
-  // Tıklanan butonun ait olduğu tarif kartını bul
   const recipeCard = heartButton.closest('.favorite-recipe-card');
   if (!recipeCard) return;
 
+  const activeCategoryBtn = document.querySelector('.category-btn.active');
+
+  const currentCategoryFilter = activeCategoryBtn
+    ? activeCategoryBtn.textContent.trim()
+    : 'All categories';
+
   const recipeId = recipeCard.dataset.id;
   removeFavorite(recipeId);
-
-  const activeCategoryBtn = document.querySelector(`.category-btn.active`);
-  const currentCategory = activeCategoryBtn
-    ? activeCategoryBtn.textContent
-    : 'All categories';
 
   displayCategoryFilters();
 
   const newCategoryBtns =
     categoriesFilterContainer.querySelectorAll('.category-btn');
   let categoryStillExists = false;
+
   newCategoryBtns.forEach(btn => {
-    if (btn.textContent === currentCategory) {
-      btn.classList.add('active');
+    if (btn.textContent.trim() === currentCategoryFilter) {
       categoryStillExists = true;
+      btn.classList.add('active');
     } else {
       btn.classList.remove('active');
     }
   });
 
-  // Eğer önceki aktif kategori silindiyse "All categories"e dön
   if (!categoryStillExists) {
-    categoriesFilterContainer
-      .querySelector('.category-btn')
-      .classList.add('active');
+    const allCategoriesBtn =
+      categoriesFilterContainer.querySelector('.category-btn');
+    if (allCategoriesBtn) {
+      allCategoriesBtn.classList.add('active');
+    }
     displayFavorites('All categories');
   } else {
-    displayFavorites(currentCategory);
+    displayFavorites(currentCategoryFilter);
   }
 }
 
@@ -146,15 +148,12 @@ function handleCategoryFilter(event) {
 
   const selectedCategory = event.target.textContent.trim();
 
-  // Tüm butonlardan 'active' sınıfını kaldır
   categoriesFilterContainer.querySelectorAll('.category-btn').forEach(btn => {
     btn.classList.remove('active');
   });
 
-  // Tıklanan butona 'active' sınıfını ekle
   event.target.classList.add('active');
 
-  // Seçilen kategoriye göre tarifleri göster
   displayFavorites(selectedCategory);
 }
 
