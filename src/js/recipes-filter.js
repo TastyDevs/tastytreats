@@ -39,9 +39,62 @@ const state = {
   ingredient: '', // _id
   ingredientLabel: '',
   page: 1,
-  limit: 6,
+  limit: 6, // API limiti; ekranda görünen kart sayısını ayrıca sınırlıyoruz
   loading: false,
+
+  // responsive render için
+  lastItems: [],
+  favs: new Set(),
 };
+
+// --- Favorites (localStorage)
+const FAV_KEY = 'tt:favorites';
+
+const readFavs = () => {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]'));
+  } catch {
+    return new Set();
+  }
+};
+const writeFavs = set => {
+  localStorage.setItem(FAV_KEY, JSON.stringify([...set]));
+};
+const isFavorite = id => state.favs.has(id);
+
+// toggle -> true: eklendi, false: çıkarıldı, null: id yok
+const toggleFavorite = id => {
+  if (!id) return null;
+  const wasFav = state.favs.has(id);
+  if (wasFav) state.favs.delete(id);
+  else state.favs.add(id);
+  writeFavs(state.favs);
+  return !wasFav;
+};
+
+state.favs = readFavs();
+
+/* ---------- FAVORI SENKRON + TEMIZLE ---------- */
+// storage'taki saçma id'leri temizle ("" / "null" / "undefined")
+function sanitizeFavorites() {
+  const cleaned = [...state.favs].filter(
+    id => id && id !== 'null' && id !== 'undefined'
+  );
+  if (cleaned.length !== state.favs.size) {
+    state.favs = new Set(cleaned);
+    writeFavs(state.favs);
+  }
+}
+// Sayfadaki kalpleri storage'a göre hizala
+function syncHeartsWithFavorites(scope = document) {
+  const hearts = scope.querySelectorAll('.heart-btn');
+  hearts.forEach(btn => {
+    const id = btn.closest('[data-id]')?.dataset.id?.trim();
+    const shouldBeActive = !!id && isFavorite(id);
+    btn.classList.toggle('active', shouldBeActive);
+  });
+}
+sanitizeFavorites();
 
 const timeOptions = ['10 min', '20 min', '30 min', '40 min'];
 
@@ -78,6 +131,14 @@ function escapeHtml(s) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
+}
+
+// Ekrana göre kart limiti (D:9 / T:8 / M:6)
+function getCardLimitByViewport() {
+  const w = window.innerWidth || 1200;
+  if (w >= 1024) return 9; // Desktop: 3x3
+  if (w >= 768) return 8; // Tablet: 2x4
+  return 6; // Mobile
 }
 
 // Filtre aktif mi? (arama veya herhangi bir dropdown seçiliyse)
@@ -167,12 +228,16 @@ function renderPagination(totalPages, currentPage) {
 
 function renderRecipes(items) {
   if (!el.recipes) return;
-  if (!items?.length) {
+
+  const limitByViewport = getCardLimitByViewport();
+  const list = Array.isArray(items) ? items.slice(0, limitByViewport) : [];
+
+  if (!list.length) {
     el.recipes.innerHTML = '';
     return;
   }
 
-  const html = items
+  const html = list
     .map(rec => {
       const {
         _id,
@@ -188,10 +253,11 @@ function renderRecipes(items) {
       const safeDesc = escapeHtml(description);
       const ratingNum = Number(rating) || 0;
       const ratingPct = Math.max(0, Math.min(100, (ratingNum / 5) * 100));
+      const activeClass = isFavorite(_id) ? 'active' : '';
 
       return `
       <div class="recipe-card" data-id="${_id || ''}">
-        <button class="heart-btn" aria-label="Add to favorites">
+        <button class="heart-btn ${activeClass}" aria-label="Add to favorites">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                viewBox="0 0 24 24" fill="none" stroke="currentColor"
                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -227,12 +293,14 @@ function renderRecipes(items) {
     .join('');
 
   el.recipes.innerHTML = html;
+
+  // Yeni basılan kartları storage'a göre hizala
+  syncHeartsWithFavorites(el.recipes);
 }
 
 /* ---------- FETCH + RENDER (önce tanımlı!) ---------- */
 async function applyFilters() {
   try {
-    // Filtre/arama yoksa native liste/paginasyon açık kalsın; fetch yapma
     if (!isFiltersActive()) {
       showNativeMode();
       return;
@@ -241,9 +309,13 @@ async function applyFilters() {
     showFiltersMode();
     setLoading(true);
 
-    const { time, area, ingredient, page, limit } = state;
+    // ---- Dinamik limit ----
+    const pageSize = getCardLimitByViewport();
+    state.limit = pageSize; // state’i güncel tut
+    const { time, area, ingredient, page } = state;
+
     const data = await withTimeout(
-      fetchFilteredRecipes({ time, area, ingredient, page, limit })
+      fetchFilteredRecipes({ time, area, ingredient, page, limit: pageSize })
     );
 
     const list = Array.isArray(data?.results)
@@ -263,10 +335,12 @@ async function applyFilters() {
         )
       : list;
 
-    if (USE_LOCAL_RENDER) {
-      renderRecipes(filtered);
+    state.lastItems = filtered;
 
-      // Pagination hesapla ve çiz
+    if (USE_LOCAL_RENDER) {
+      renderRecipes(filtered.slice(0, pageSize));
+
+      // ---- Pagination hesapları ----
       if (paginationContainer) {
         const apiTotalPages =
           Number(data?.totalPages) || Number(data?.pageCount) || 0;
@@ -280,10 +354,7 @@ async function applyFilters() {
 
         const totalPages =
           apiTotalPages ||
-          Math.max(
-            1,
-            Math.ceil((totalItems || filtered.length) / (limit || 6))
-          );
+          Math.max(1, Math.ceil((totalItems || filtered.length) / pageSize));
 
         renderPagination(totalPages, state.page);
       }
@@ -294,7 +365,11 @@ async function applyFilters() {
 
     document.dispatchEvent(
       new CustomEvent('recipes:filtered', {
-        detail: { recipes: filtered, paging: { page, limit }, raw: data },
+        detail: {
+          recipes: filtered,
+          paging: { page, limit: pageSize },
+          raw: data,
+        },
       })
     );
   } catch (err) {
@@ -315,7 +390,7 @@ async function applyFilters() {
       })
     );
   } finally {
-    setLoading(false); // DOM'u silmiyor
+    setLoading(false);
   }
 }
 
@@ -430,18 +505,47 @@ function initSearch() {
   });
 }
 
-/* ---------- Reset ---------- */
+// Varsayılan dropdown metinlerini sakla
+const defaultDropdownLabels = {};
+(el.dropdowns || []).forEach(dd => {
+  const type = dd.dataset.type; // time | area | ingredient
+  const toggle = dd.querySelector('.dropdown-toggle');
+  if (type && toggle) {
+    defaultDropdownLabels[type] =
+      toggle.getAttribute('data-default') || toggle.textContent.trim();
+  }
+});
+
 function initReset() {
   if (!el.resetBtn) return;
   el.resetBtn.addEventListener('click', () => {
+    // State'i temizle
     state.query = '';
     state.time = '';
     state.area = '';
     state.ingredient = '';
     state.ingredientLabel = '';
     state.page = 1;
+
+    // Arama input'unu temizle
     if (el.search) el.search.value = '';
-    applyFilters(); // filtre pasif => native moda dön
+
+    // Dropdown metinlerini ve seçili öğeleri sıfırla
+    (el.dropdowns || []).forEach(dd => {
+      const type = dd.dataset.type;
+      const toggle = dd.querySelector('.dropdown-toggle');
+      const menu = dd.querySelector('.dropdown-menu');
+      if (toggle) {
+        toggle.textContent = defaultDropdownLabels[type] || 'Select';
+      }
+      menu
+        ?.querySelectorAll('.selected')
+        .forEach(n => n.classList.remove('selected'));
+      dd.classList.remove('open');
+    });
+
+    // Filtreyi sıfırlayıp native moda dön
+    applyFilters();
   });
 }
 
@@ -459,6 +563,9 @@ function initReset() {
     initReset();
     await applyFilters(); // filtre pasif => native mod
 
+    // İlk yüklemede var olan kalpleri storage'a hizala
+    syncHeartsWithFavorites();
+
     // Pagination tıklama
     if (paginationContainer) {
       paginationContainer.addEventListener('click', e => {
@@ -473,14 +580,32 @@ function initReset() {
       });
     }
 
-    // Kalp butonuna tıklama
+    // Kalp butonu: güvenli ID ile toggle + UI senkron
     document.addEventListener('click', e => {
-      const btn = e.target.closest('.heart-btn');
-      if (btn) {
-        btn.classList.toggle('active');
-        // burada favori ekleme/çıkarma işlemlerini yapabilirsin
+      const heart = e.target.closest('.heart-btn');
+      if (!heart) return;
+
+      // En yakın data-id taşıyan ata üzerinden id al
+      const host = heart.closest('[data-id]');
+      const id = host?.dataset.id?.trim();
+
+      if (!id) {
+        console.warn('[favorites] data-id bulunamadı; işlem yapılmadı.');
+        return;
       }
+
+      const nowFav = toggleFavorite(id); // true: eklendi, false: çıkarıldı
+      if (nowFav === null) return;
+
+      heart.classList.toggle('active', nowFav);
     });
+
+    // (Opsiyonel) "Favorites" menü linkine tıklama
+    document
+      .querySelector('.nav-link[href="./favorites.html"]')
+      ?.addEventListener('click', () => {
+        console.log('Favorites link clicked, redirecting...');
+      });
 
     // "See recipe" butonuna tıklama
     document.addEventListener('click', e => {
@@ -490,9 +615,15 @@ function initReset() {
         const id = card?.dataset.id;
         if (id) {
           console.log('Recipe clicked:', id);
-          // Burada id ile detay sayfasına yönlendirebilir veya modal açabilirsin
+          // burada id ile detay sayfasına yönlendirebilirsin
         }
       }
+    });
+
+    // Resize'da son sonuçları kart limitine göre tekrar çiz
+    window.addEventListener('resize', () => {
+      if (!state.lastItems?.length) return;
+      renderRecipes(state.lastItems);
     });
   } catch (e) {
     console.error('[filters] init error:', e);

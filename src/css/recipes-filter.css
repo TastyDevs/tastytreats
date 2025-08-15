@@ -193,6 +193,18 @@
   box-shadow: none;
 }
 
+/* Varsayılan (favoride değilken): beyaz/boş kalp */
+.heart-btn svg path {
+  transition: fill 0.15s ease, stroke 0.15s ease;
+}
+.heart-btn:not(.active) svg path {
+  fill: transparent; /* boş olsun */
+}
+
+/* Favorideyken: kırmızı kalp */
+.heart-btn.active svg path {
+  fill: #e53935;
+}
 /* Tablet */
 @media (min-width: 768px) {
   .filters {
@@ -201,6 +213,18 @@
     flex-wrap: wrap;
     gap: 16px;
     padding: 24px 0;
+  }
+
+  .recipes-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* kartlar arası boşluk */
+    justify-content: center;
+  }
+
+  .recipes-flex .recipe-card {
+    flex: 0 0 calc(25% - 12px); /* 4 sütun */
+    max-width: calc(25% - 12px);
   }
   .filter-group.search-group,
   .filter-group.time-group {
@@ -229,10 +253,12 @@
     flex-wrap: wrap;
     gap: 16px;
     padding: 24px 0;
+    margin-left: 24px;
   }
   .filter-group-search {
     width: 278px;
   }
+
   .filter-group:nth-of-type(2) {
     width: 125px; /* Time */
   }
@@ -248,5 +274,48 @@
   .reset-filter {
     margin-top: 8px;
     margin-left: auto;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 40px;
+  }
+
+  button.reset-filter {
+    margin-left: 600px;
+    margin-top: 10px;
+  }
+
+  #recipes-flex,
+  #recipes-container,         /* native liste */
+  .recipes-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* kart aralığı */
+    justify-content: flex-start;
+    width: 782px; /* Figma genişliği */
+    margin-inline: auto;
+  }
+
+  /* tek kart */
+  #recipes-flex > .recipe-card,
+  #recipes-container > .recipe-card,
+  .recipes-list > .recipe-card {
+    box-sizing: border-box;
+    margin: 0;
+    /* 3 sütun: 2 gap (16px*2 = 32px) çıkarıldı */
+    flex: 0 0 calc((100% - 32px) / 3);
+    max-width: calc((100% - 32px) / 3);
+  }
+
+  /* resim taşmasını engelle */
+  .recipe-card img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 }
