@@ -284,7 +284,7 @@ main:has(.back-link) {
 .categories-box:hover {
   background-color: var(--pistachio);
   color: var(--white-smoke);
-  border: none;
+  border-color: var(--pistachio);
 }
 
 .add-to-favorite-btn {

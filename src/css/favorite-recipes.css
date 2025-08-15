@@ -100,6 +100,63 @@
   border: none;
 }
 
+.favorites-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 335px;
+  margin: 24px auto 0;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.pagination-btn,
+.pagination-number,
+.pagination-ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--dark-charcoal);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  min-width: 40px;
+  height: 40px;
+  user-select: none;
+  border: 1px solid var(--onyx-30-opacity);
+}
+
+.pagination-ellipsis {
+  border: none;
+}
+
+.pagination-btn:hover,
+.pagination-number.active,
+.pagination-number:hover {
+  background-color: var(--pistachio);
+  color: var(--onyx);
+  border-color: var(--pistachio);
+}
+
+.pagination-ellipsis {
+  cursor: default;
+  background-color: transparent;
+  min-width: auto;
+  padding: 0 6px;
+}
+
+.prev-first:disabled,
+.prev:disabled,
+.next:disabled,
+.next-last:disabled {
+  background-color: var(--onyx);
+  color: var(--white-50-opacity);
+  cursor: not-allowed;
+}
+
 @media only screen and (min-width: 768px) {
   .favorite-recipes-list {
     grid-template-columns: repeat(auto-fill, minmax(224px, 1fr));
@@ -139,6 +196,36 @@
     width: 704px;
     margin-bottom: 32px;
     gap: 15px;
+  }
+
+  .favorites-pagination {
+    height: 44px;
+    width: 446px;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+
+  .pagination-btn,
+  .pagination-number {
+    min-width: 44px;
+    height: 44px;
+  }
+
+  .pagination-ellipsis {
+    padding: 0 10px;
+  }
+
+  .favorites-pagination .pagination-btn.prev-first + .pagination-btn.prev {
+    margin-right: 8px;
+  }
+  .favorites-pagination
+    .pagination-btn.prev
+    + .pagination-number:first-of-type {
+    margin-left: 24px;
+  }
+
+  .favorites-pagination .pagination-number:last-of-type + .pagination-btn.next {
+    margin-right: 24px;
   }
 }
 
