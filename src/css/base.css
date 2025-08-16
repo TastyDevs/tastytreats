@@ -537,11 +537,20 @@ body[data-theme='dark'] {
 
 body[data-theme='dark'] .filter-input,
 body[data-theme='dark'] .dropdown-toggle,
-body[data-theme='dark'] .reset-filter,
-body[data-theme='dark'] .dropdown-menu {
+body[data-theme='dark'] .reset-filter {
   border-color: var(--white-20-opacity);
   background-color: var(--jet);
   color: var(--white-50-opacity);
+}
+body[data-theme='dark'] .dropdown-menu
+{
+  border-color: var(--white-20-opacity);
+  background-color: var(--dark);
+ color: var(--white-smoke);
+}
+body[data-theme='dark'] .dropdown-menu li button {
+  color: var(--white-smoke);
+  background-color: var(--dark);
 }
 body[data-theme='dark'] .reset-filter{
   background-color: var(--dark);
@@ -596,12 +605,29 @@ body[data-theme='dark'] .nav-menu{
 }
 body[data-theme='dark'] .tasty{
  color: var(--white-smoke);
-}body[data-theme='dark'] .filter-input,
+}
+body[data-theme='dark'] .filter-input,
 .dropdown-toggle{
 border-color: var(--white-20-opacity);
   background-color: var(--jet);
   color: var(--white-50-opacity);
 }
+body[data-theme='dark'] .pagination-btn{
+ color: var(--white-smoke);
+ background-color: var(--dark);
+}
+
+body[data-theme='dark'] .pagination-btn.active{
+ color: var(--white-smoke);
+ background-color: var(--pistachio);
+}
+body[data-theme='dark'] .pagination-btn.arrow-prev:disabled, .pagination-btn.arrow-next:disabled{
+ color: var(--white-smoke);
+ background-color: var(--onyx);
+ border: var(--onyx-20-opacity) solid 1px;
+}
+
+
 @media only screen and (min-width: 768px) {
   .recipes-big-container {
     display: flex;
