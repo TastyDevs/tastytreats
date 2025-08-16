@@ -147,7 +147,7 @@
 /* Media Query: 768px+ */
 @media (min-width: 768px) {
   .header {
-    width: 704px;
+    width: 768px;
   }
 
   .header-container {
