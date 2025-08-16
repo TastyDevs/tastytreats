@@ -34,6 +34,7 @@ main:has(.back-link) {
  */
 :root {
   /* --- Katı Renkler --- */
+  --dark: #161616;
   --white-smoke: #f8f8f8; /* White Smoke (Çok Açık Gri) */
   --silver: #cecdcd; /* Silver (Gümüş Gri) */
   --pistachio: #9bb537; /* Pistachio (Fıstık Yeşili) */
@@ -218,7 +219,7 @@ main:has(.back-link) {
 
 .recipe-text {
   font-size: 12px;
-  line-height: 16px;
+  line-height: 1.33;
   color: var(--white-smoke);
 }
 
@@ -263,7 +264,6 @@ main:has(.back-link) {
   border: 1px solid var(--pistachio);
   border-radius: 12px;
   color: var(--onyx);
-  background-color: transparent;
 }
 
 .order-now-btn:hover {
@@ -278,13 +278,13 @@ main:has(.back-link) {
   border: 1px solid var(--onyx-20-opacity);
   border-radius: 15px;
   color: var(--onyx-50-opacity);
-  background-color: transparent;
+  background-color:var(--backrground-color);
 }
 
 .categories-box:hover {
   background-color: var(--pistachio);
   color: var(--white-smoke);
-  border-color: var(--pistachio);
+  border: none;
 }
 
 .add-to-favorite-btn {
@@ -322,7 +322,7 @@ main:has(.back-link) {
   border: 1px solid var(--pistachio);
   border-radius: 15px;
   color: var(--onyx);
-  background-color: transparent;
+  
 }
 
 .give-a-rating-box:hover {
@@ -337,11 +337,12 @@ main:has(.back-link) {
   border-radius: 8px;
   background-color: var(--pistachio);
   color: var(--white-smoke);
-  border: 1px solid transparent;
+  border: 1px solid ;
 }
 
 .see-recipe-btn:hover {
-  background-color: #8bb975;
+  color: var(--onyx);
+  border-color: var(--pistachio);
 }
 
 /* Tüm dropdown panelleri için temel görünüm */
@@ -528,19 +529,22 @@ main:has(.back-link) {
 
 /* --- Genel Sayfa Stilleri --- */
 body[data-theme='dark'] {
-  background-color: var(--jet);
-  color: var(--white);
+  background-color: var(--dark);
+  color: var(--white-smoke);
 }
 
 /* --- Dark Theme --- */
 
-body[data-theme='dark'] .search-input,
-body[data-theme='dark'] .search-time,
-body[data-theme='dark'] .search-area,
-body[data-theme='dark'] .search-ingredients {
+body[data-theme='dark'] .filter-input,
+body[data-theme='dark'] .dropdown-toggle,
+body[data-theme='dark'] .reset-filter,
+body[data-theme='dark'] .dropdown-menu {
   border-color: var(--white-20-opacity);
   background-color: var(--jet);
   color: var(--white-50-opacity);
+}
+body[data-theme='dark'] .reset-filter{
+  background-color: var(--dark);
 }
 
 body[data-theme='dark'] .search-input::placeholder {
@@ -555,6 +559,7 @@ body[data-theme='dark'] .dropdown-panel {
 
 body[data-theme='dark'] .dropdown-option {
   color: var(--white-30-opacity);
+  background-color: var(--backrground-color);
 }
 
 body[data-theme='dark'] .dropdown-option:hover {
@@ -563,12 +568,40 @@ body[data-theme='dark'] .dropdown-option:hover {
 
 body[data-theme='dark'] .categories-box {
   border: 1px solid var(--white-20-opacity);
+  color: var(--white-50-opacity);
 }
 
 body[data-theme='dark'] .order-now-btn {
   color: var(--white-smoke);
 }
 
+body[data-theme='dark'] .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--white-20-opacity); 
+}
+
+body[data-theme='dark'] .section-title{
+ color: var(--white-smoke);
+}
+body[data-theme='dark'] .popular-recipes-description{
+  color: var(--white-50-opacity);
+}
+body[data-theme='dark'] .cart-icon{
+  filter: invert(100%);
+}
+body[data-theme='dark'] #menu-icon{
+  filter: invert(100%);
+}
+body[data-theme='dark'] .nav-menu{
+  background-color: var(--dark);
+}
+body[data-theme='dark'] .tasty{
+ color: var(--white-smoke);
+}body[data-theme='dark'] .filter-input,
+.dropdown-toggle{
+border-color: var(--white-20-opacity);
+  background-color: var(--jet);
+  color: var(--white-50-opacity);
+}
 @media only screen and (min-width: 768px) {
   .recipes-big-container {
     display: flex;
