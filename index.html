@@ -6,32 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TastyTreats</title>
     <script type="module" crossorigin src="/tastytreats/index.js"></script>
-    <link rel="modulepreload" crossorigin href="/tastytreats/assets/styles-CGoEh3uS.js">
-    <link rel="stylesheet" crossorigin href="/tastytreats/assets/styles-CocZRalE.css">
+    <link rel="modulepreload" crossorigin href="/tastytreats/assets/header-CXVlyN8_.js">
+    <link rel="stylesheet" crossorigin href="/tastytreats/assets/header-Da05zK17.css">
     <link rel="stylesheet" crossorigin href="/tastytreats/assets/index-CcmaVJ_k.css">
   </head>
   <body>
     <header class="header">
-  <div class="container">
-    <nav class="nav">
-      <a class="nav-logo" href="./index.html" aria-label="Site logo">
-        <svg class="nav-logo-icon" width="100" height="30">
-          <use href="/tastytreats/assets/sprite-ByRoohhG.svg#logo"></use>
-        </svg>
-      </a>
-      <ul class="nav-list">
-        <li class="nav-item">
-          <a class="nav-link {=$highlight-act}" href="./index.html">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {=$highlight-curr}" href="./favorites.html"
-            >Favorites</a
-          >
-        </li>
-      </ul>
-    </nav>
+  <div class="container header-container">
+    <div class="header-left">
+      <a href="/home">Home</a>
+      <a href="/favorites">Favorites</a>
+    </div>
+
+    <div class="logo">
+      tasty<span class="tasty">treats.</span>
+    </div>
+
+    <div class="header-icons">
+      <img src="data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M9%2022C9.55228%2022%2010%2021.5523%2010%2021C10%2020.4477%209.55228%2020%209%2020C8.44772%2020%208%2020.4477%208%2021C8%2021.5523%208.44772%2022%209%2022Z'%20fill='%23050505'%20stroke='%23050505'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M20%2022C20.5523%2022%2021%2021.5523%2021%2021C21%2020.4477%2020.5523%2020%2020%2020C19.4477%2020%2019%2020.4477%2019%2021C19%2021.5523%2019.4477%2022%2020%2022Z'%20fill='%23050505'%20stroke='%23050505'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M1%201H5L7.68%2014.39C7.77144%2014.8504%208.02191%2015.264%208.38755%2015.5583C8.75318%2015.8526%209.2107%2016.009%209.68%2016H19.4C19.8693%2016.009%2020.3268%2015.8526%2020.6925%2015.5583C21.0581%2015.264%2021.3086%2014.8504%2021.4%2014.39L23%206H6'%20stroke='%23050505'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="Cart" class="cart-icon" />
+      <!-- Desktop toggle: header'da, sepetin yanında -->
+      <div class="toggle-switch desktop-toggle" id="desktop-toggle">
+        <div class="toggle-thumb"></div>
+      </div>
+      <img src="data:image/svg+xml,%3csvg%20width='32'%20height='33'%20viewBox='0%200%2032%2033'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M28%2013.8333H4'%20stroke='%23050505'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M28%208.5H4'%20stroke='%23050505'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M28%2019.1667H4'%20stroke='%23050505'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M28%2024.5H4'%20stroke='%23050505'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" id="menu-icon"/>
+    </div>
   </div>
 </header>
+
+<nav class="nav-menu" id="nav-menu">
+  <img src="data:image/svg+xml,%3csvg%20width='32'%20height='32'%20viewBox='0%200%2032%2032'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M24%208L8%2024'%20stroke='%23F8F8F8'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M8%208L24%2024'%20stroke='%23F8F8F8'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" class="nav-close-btn" id="nav-close-btn" aria-label="Close menu" style="cursor:pointer"/>
+  <a href="/Home">Home</a>
+  <a href="/favorites">Favorites</a>
+
+  <!-- Mobile toggle: nav menü içinde, sol altta -->
+  <div class="mobile-toggle-switch" id="mobile-toggle">
+    <div class="toggle-thumb"></div>
+  </div>
+</nav>
+
 
     <section>
   <div class="container">HOME HERO</div>
