@@ -230,7 +230,7 @@
 }
 .pagination-btn.arrow-prev:disabled,
 .pagination-btn.arrow-next:disabled {
-  background-color: #f0f0f0;
+  background-color: var(--onyx);
   color: #c0c0c0;
   border-color: #e0e0e0;
 }
