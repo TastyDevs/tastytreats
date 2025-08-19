@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Favorites</title>
     <script type="module" crossorigin src="/tastytreats/favorites.js"></script>
-    <link rel="modulepreload" crossorigin href="/tastytreats/assets/header-CXVlyN8_.js">
-    <link rel="stylesheet" crossorigin href="/tastytreats/assets/header-Da05zK17.css">
+    <link rel="modulepreload" crossorigin href="/tastytreats/assets/footer-DTCql1nM.js">
+    <link rel="stylesheet" crossorigin href="/tastytreats/assets/footer-DnP5auRO.css">
     <link rel="stylesheet" crossorigin href="/tastytreats/assets/favorites-RttTM4mE.css">
   </head>
   <body>
@@ -70,21 +70,127 @@
       </div>
     </main>
 
-    <footer class="footer">
-  <div class="container">
-    <p class="footer-desc">
-      Made with ✨ by
-      <a
-        class="footer-link"
-        href="https://goit.global/ua/"
-        target="_blank"
-        rel="noopener noreferrer"
+    <footer class="footer" id="footer">
+  <p class="footer-text">
+    <span class="footer-copyright">&copy; 2025</span> | All Rights Reserved |
+    Developed with
+    <span class="footer-heart">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="#FF6B08"
+        xmlns="http://www.w3.org/2000/svg"
       >
-        GoIT team
-      </a>
-    </p>
-  </div>
+        <path
+          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+               2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+               C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
+               c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+        />
+      </svg>
+    </span>
+    by
+    <button class="footer-link" id="team-btn">GoIT Students</button>
+  </p>
 </footer>
+
+<div class="modal-overlay" id="team-modal" style="display: none">
+  <div class="modal">
+    <button class="modal-close" id="modal-close">&times;</button>
+    <h2 class="modal-title">Developer TEAM</h2>
+    <div class="slider" id="slider">
+      <div class="slide">
+        <div class="avatar-icon">
+          <img src="/tastytreats/assets/iconman-DnR8pSud.webp" alt="Full Stack Developer" />
+        </div>
+        <h3>Furkan Yücel</h3>
+        <p>Team Lead</p>
+        <div class="profile-links">
+          <a
+            href="https://www.linkedin.com/in/furkycl/"
+            target="_blank"
+            class="profile-link linkedin"
+            >LinkedIn</a
+          >
+          <a
+            href="https://github.com/furkycl"
+            target="_blank"
+            class="profile-link github"
+            >GitHub</a
+          >
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="avatar-icon">
+          <img src="/tastytreats/assets/iconwoman-DaoLmQgU.webp" alt="Icon Woman" />
+        </div>
+        <h3>Cemre Deniz Yıldız</h3>
+        <p>Scrum Master</p>
+        <div class="profile-links">
+          <a
+            href="https://www.linkedin.com/in/cemre-y-8a970023a/"
+            target="_blank"
+            class="profile-link linkedin"
+            >LinkedIn</a
+          >
+          <a
+            href="https://github.com/Cemrdeniz"
+            target="_blank"
+            class="profile-link github"
+            >GitHub</a
+          >
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="avatar-icon">
+          <img src="/tastytreats/assets/iconman-DnR8pSud.webp" alt="Icon Man" />
+        </div>
+        <h3>Berke Zopirli</h3>
+        <p>Full Stack Developer</p>
+        <div class="profile-links">
+          <a
+            href="https://www.linkedin.com/in/berke-zopirli-23107223a/"
+            target="_blank"
+            class="profile-link linkedin"
+            >LinkedIn</a
+          >
+          <a
+            href="https://github.com/zopirli-berke"
+            target="_blank"
+            class="profile-link github"
+            >GitHub</a
+          >
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="avatar-icon">
+          <img src="/tastytreats/assets/iconwoman-DaoLmQgU.webp" alt="Icon Woman" />
+        </div>
+        <h3>Hilal Dinç</h3>
+        <p>Full Stack Developer</p>
+        <div class="profile-links">
+          <a href="" target="_blank" class="profile-link linkedin">LinkedIn</a>
+          <a
+            href="https://github.com/hilaldincc"
+            target="_blank"
+            class="profile-link github"
+            >GitHub</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-controls">
+      <button class="prev-slide">&#8592;</button>
+      <button class="next-slide">&#8594;</button>
+    </div>
+  </div>
+</div>
+
 
 
   </body>
