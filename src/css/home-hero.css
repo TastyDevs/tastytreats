@@ -57,14 +57,14 @@
 }
 
 .slides {
-  display: none; /* başta gizli */
+  display: none;
   justify-content: center;
   align-items: flex-end;
   gap: 15px;
 }
 
 .slides.active {
-  display: flex; /* aktif sayfa görünsün */
+  display: flex; 
 }
 
 /* İlk resim */
@@ -83,21 +83,83 @@
   overflow: hidden;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   position: relative;
-  z-index: 2; /* önde dursun */
+  z-index: 2;
 }
 
-/* Sağdaki resim → 200px ama sadece 25% gözüksün */
+.slide-bg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #050505; /* arka plan */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+}
+
+/* Yeşil glow efekti */
+.slide-bg::before {
+  content: '';
+  position: absolute;
+  width: 120%; 
+  height: 120%; 
+  background: radial-gradient(circle, #9bb5374d 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.slide-bg img {
+  width: 100%;
+  height: 60%;
+  position: relative;
+  z-index: 2;
+  background-color: transparent;
+  border-radius: 50% / 50%;
+}
+
+
+.slide-text {
+  position: absolute;
+  top: 80%;
+  width: 70%;
+  text-align: center;
+  z-index: 3;
+}
+
+.slide-text p:first-child {
+  font-weight: 300;
+  font-style: normal;
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: 0%;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 2px 0;
+  color: var(--white-50-opacity);
+}
+
+.slide-text p:last-child {
+  font-size: 8px;
+  color: #f8f8f833; 
+  margin: 2px 0;
+}
+
+
 .slide-partial {
   flex: 0 0 200px;
   height: 280px;
   border-radius: 15px;
   overflow: hidden;
-  margin-right: -150px; /* 200px - 50px = 150px dışarı taşı */
+  margin-right: -150px; 
   position: relative;
   z-index: 1;
 }
 
-.slide img {
+.slide-partial img,
+.slide.small img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -144,12 +206,8 @@
     width: 100%;
   }
 
-  /* Ortadaki ve sağdaki resim tam yerleşim için */
-  .slide-main img,
   .slide-partial img {
-    width: 100%;
     height: 100%;
-    object-fit: cover;
   }
   .hero-text {
     flex: 0 0 auto;
@@ -173,9 +231,10 @@
 
   .slides {
     justify-content: flex-start;
+    position: relative; 
   }
 
-  /* Slider boyutları tablet için */
+  
   .slide.small {
     width: 137px;
     height: 442px;
@@ -189,17 +248,52 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 2;
+    overflow: hidden;
+  }
+
+  .slide-bg img {
+    width: 90%;
+    height: 70%;
+  }
+
+  
+  .slide-text {
+    top: 85%;
+    width: 80%;
+  }
+
+  .slide-text p:first-child {
+    font-size: 14px;
+  }
+
+  .slide-text p:last-child {
+    font-size: 12px;
   }
 
   .slide-partial {
-    flex: 0 0 220px;
+    flex: 0 0 351px;
     height: 442px;
     border-radius: 15px;
+    border-right: none;
     position: relative;
+    margin-right: -250px; 
     z-index: 1;
+    overflow: hidden; 
+  }
+    
+  .slide-text {
+    top: 85%;
+    width: 80%;
+  }
+
+  .slide-text p:first-child {
+    font-size: 14px;
+  }
+
+  .slide-text p:last-child {
+    font-size: 12px;
   }
 }
-
 @media (min-width: 1280px) {
   .hero {
     flex-direction: row;
@@ -236,7 +330,7 @@
     justify-content: flex-start;
   }
 
-  /* Slider boyutları tablet için */
+  
   .slide.small {
     width: 137px;
     height: 468px;
@@ -257,15 +351,28 @@
     height: 468px;
     border-radius: 15px;
     overflow: hidden;
-    margin-right: -150px; /* 200px - 50px = 150px dışarı taşı */
+    margin-right: -150px; 
     position: relative;
     z-index: 1;
   }
-  .slide-main img,
+  
   .slide-partial img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  
+  .slide-text {
+    top: 85%;
+    width: 80%;
+  }
+
+  .slide-text p:first-child {
+    font-size: 14px;
+  }
+
+  .slide-text p:last-child {
+    font-size: 12px;
   }
 }
 @media only screen and (min-width: 1440px) {
@@ -286,7 +393,7 @@
   .hero-text p {
     font-size: 20px;
   }
-  /* Slider boyutları tablet için */
+  
   .slide.small {
     width: 189px;
     height: 550px;
@@ -307,8 +414,21 @@
     height: 550px;
     border-radius: 15px;
     overflow: hidden;
-    margin-right: -150px; /* 200px - 50px = 150px dışarı taşı */
+    margin-right: -150px; 
     position: relative;
     z-index: 1;
+  }
+  
+  .slide-text {
+    top: 85%;
+    width: 80%;
+  }
+
+  .slide-text p:first-child {
+    font-size: 14px;
+  }
+
+  .slide-text p:last-child {
+    font-size: 12px;
   }
 }
