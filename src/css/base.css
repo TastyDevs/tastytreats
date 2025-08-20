@@ -626,11 +626,20 @@ body[data-theme='dark'] .pagination-btn.arrow-prev:disabled, .pagination-btn.arr
  background-color: var(--onyx);
  border: var(--onyx-20-opacity) solid 1px;
 }
-body[data-theme='dark'] .hero-text p{
+body[data-theme='dark'] .home-hero-text p{
  color: var(--white-smoke);
 }
-body[data-theme='dark'] .hero-btn{
+body[data-theme='dark'] .home-hero-btn{
  color: var(--white-smoke);
+}
+body[data-theme='dark'] .home-popup-content{
+ background-color: var(--onyx);
+}
+body[data-theme='dark'] .home-popup h2{
+ color: #fff;
+}
+body[data-theme='dark'] .home-popup label{
+ color: var(--white-50-opacity);
 }
 @media only screen and (min-width: 768px) {
   .recipes-big-container {
