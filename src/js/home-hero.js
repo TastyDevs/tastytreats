@@ -1,5 +1,5 @@
-const slides = document.querySelectorAll(".slides");
-const dots = document.querySelectorAll(".dot");
+const slides = document.querySelectorAll(".home-slides");
+const dots = document.querySelectorAll(".home-dot");
 
 let currentPage = 0;
 
