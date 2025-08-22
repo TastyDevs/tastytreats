@@ -151,7 +151,8 @@ function debounce(func, delay = 250) {
 }
 function calculateLimit() {
   const width = window.innerWidth;
-  if (width < 768) return 6;
-  if (width < 1280) return 8;
-  return 9;
+  if (width >= 1440) return 16;
+  if (width >= 1280 && width < 1440) return 9;
+  if (width >= 768 && width < 1280) return 8;
+  return 6;
 }
