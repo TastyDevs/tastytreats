@@ -80,3 +80,18 @@
     }
   }
 }
+
+@media only screen and (min-width: 1440px) {
+  .favorites-hero {
+    width: 1376px;
+    background-image: url(../img/webp/favorites-hero-desktop.webp);
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+  }
+
+  @media (min-resolution: 2dppx) {
+    .favorites-hero {
+      background-image: url('../img/webp/favorites-hero-desktop@2x.webp');
+    }
+  }
+}

@@ -43,7 +43,15 @@ function displayCategoryFilters() {
 
 // Sayfa başı görünecek olan tarif sayısı
 function getItemsPerPage() {
-  return window.innerWidth >= 768 ? 12 : 9;
+  const width = window.innerWidth;
+
+  if (width >= 1440) {
+    return 15;
+  } else if (width >= 768) {
+    return 12;
+  } else {
+    return 9;
+  }
 }
 
 function renderPagination() {

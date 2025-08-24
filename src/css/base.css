@@ -278,7 +278,7 @@ main:has(.back-link) {
   border: 1px solid var(--onyx-20-opacity);
   border-radius: 15px;
   color: var(--onyx-50-opacity);
-  background-color:var(--backrground-color);
+  background-color: var(--backrground-color);
 }
 
 .categories-box:hover {
@@ -322,7 +322,6 @@ main:has(.back-link) {
   border: 1px solid var(--pistachio);
   border-radius: 15px;
   color: var(--onyx);
-  
 }
 
 .give-a-rating-box:hover {
@@ -337,7 +336,7 @@ main:has(.back-link) {
   border-radius: 8px;
   background-color: var(--pistachio);
   color: var(--white-smoke);
-  border: 1px solid ;
+  border: 1px solid transparent;
 }
 
 .see-recipe-btn:hover {
@@ -542,17 +541,16 @@ body[data-theme='dark'] .reset-filter {
   background-color: var(--jet);
   color: var(--white-50-opacity);
 }
-body[data-theme='dark'] .dropdown-menu
-{
+body[data-theme='dark'] .dropdown-menu {
   border-color: var(--white-20-opacity);
   background-color: var(--dark);
- color: var(--white-smoke);
+  color: var(--white-smoke);
 }
 body[data-theme='dark'] .dropdown-menu li button {
   color: var(--white-smoke);
   background-color: var(--dark);
 }
-body[data-theme='dark'] .reset-filter{
+body[data-theme='dark'] .reset-filter {
   background-color: var(--dark);
 }
 
@@ -585,61 +583,62 @@ body[data-theme='dark'] .order-now-btn {
 }
 
 body[data-theme='dark'] .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--white-20-opacity); 
+  background: var(--white-20-opacity);
 }
 
-body[data-theme='dark'] .section-title{
- color: var(--white-smoke);
+body[data-theme='dark'] .section-title {
+  color: var(--white-smoke);
 }
-body[data-theme='dark'] .popular-recipes-description{
+body[data-theme='dark'] .popular-recipes-description {
   color: var(--white-50-opacity);
 }
-body[data-theme='dark'] .cart-icon{
+body[data-theme='dark'] .cart-icon {
   filter: invert(100%);
 }
-body[data-theme='dark'] #menu-icon{
+body[data-theme='dark'] #menu-icon {
   filter: invert(100%);
 }
-body[data-theme='dark'] .nav-menu{
+body[data-theme='dark'] .nav-menu {
   background-color: var(--dark);
 }
-body[data-theme='dark'] .tasty{
- color: var(--white-smoke);
+body[data-theme='dark'] .tasty {
+  color: var(--white-smoke);
 }
 body[data-theme='dark'] .filter-input,
-.dropdown-toggle{
-border-color: var(--white-20-opacity);
+.dropdown-toggle {
+  border-color: var(--white-20-opacity);
   background-color: var(--jet);
   color: var(--white-50-opacity);
 }
-body[data-theme='dark'] .pagination-btn{
- color: var(--white-smoke);
- background-color: var(--dark);
+body[data-theme='dark'] .pagination-btn {
+  color: var(--white-smoke);
+  background-color: var(--dark);
 }
 
-body[data-theme='dark'] .pagination-btn.active{
- color: var(--white-smoke);
- background-color: var(--pistachio);
+body[data-theme='dark'] .pagination-btn.active {
+  color: var(--white-smoke);
+  background-color: var(--pistachio);
 }
-body[data-theme='dark'] .pagination-btn.arrow-prev:disabled, .pagination-btn.arrow-next:disabled{
- color: var(--white-smoke);
- background-color: var(--onyx);
- border: var(--onyx-20-opacity) solid 1px;
+body[data-theme='dark'] .pagination-btn.arrow-prev:disabled,
+.pagination-btn.arrow-next:disabled {
+  color: var(--white-smoke);
+  background-color: var(--onyx);
+  border: var(--onyx-20-opacity) solid 1px;
 }
-body[data-theme='dark'] .home-hero-text p{
- color: var(--white-smoke);
+body[data-theme='dark'] .home-hero-text p {
+  color: var(--white-smoke);
 }
-body[data-theme='dark'] .home-hero-btn{
- color: var(--white-smoke);
+body[data-theme='dark'] .home-hero-btn {
+  color: var(--white-smoke);
 }
-body[data-theme='dark'] .home-popup-content{
- background-color: var(--onyx);
+body[data-theme='dark'] .home-popup-content {
+  background-color: var(--onyx);
 }
-body[data-theme='dark'] .home-popup h2{
- color: #fff;
+body[data-theme='dark'] .home-popup h2 {
+  color: #fff;
 }
-body[data-theme='dark'] .home-popup label{
- color: var(--white-50-opacity);
+body[data-theme='dark'] .home-popup label {
+  color: var(--white-50-opacity);
 }
 @media only screen and (min-width: 768px) {
   .recipes-big-container {
