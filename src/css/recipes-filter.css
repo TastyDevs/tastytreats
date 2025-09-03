@@ -223,9 +223,14 @@
   }
 
   .recipes-flex .recipe-card {
-    flex: 0 0 calc(25% - 12px); /* 4 sütun */
-    max-width: calc(25% - 12px);
+    flex: 0 0 calc(50% - 16px); /* 4 sütun */
+    max-width: calc(50% - 16px);
   }
+
+  .recipes-flex {
+    margin-left: 24px;
+  }
+
   .filter-group.search-group,
   .filter-group.time-group {
     width: calc(50% - 8px);
@@ -246,7 +251,7 @@
 }
 
 /* Desktop */
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .filters {
     width: 780px;
     display: flex;
@@ -286,7 +291,6 @@
   }
 
   button.reset-filter {
-    margin-left: 600px;
     margin-top: 10px;
   }
 
@@ -317,5 +321,40 @@
     display: block;
     width: 100%;
     height: auto;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  #recipes-flex,
+  #recipes-container,         /* native liste */
+  .recipes-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* kart aralığı */
+    justify-content: flex-start;
+    width: 1080px; /* Figma genişliği */
+    margin-inline: auto;
+    margin-left: 48px;
+  }
+
+  #recipes-flex > .recipe-card,
+  #recipes-container > .recipe-card,
+  .recipes-list > .recipe-card {
+    box-sizing: border-box;
+    margin: 0;
+
+    flex: 0 0 calc(25% - 12px); /* 4 sütun */
+    max-width: calc(25% - 12px);
+  }
+
+  .filters {
+    width: 1080px;
+    margin-left: 48px;
+    gap: 24px;
+    justify-content: space-between;
+  }
+
+  .filter-input {
+    width: 480px;
   }
 }
