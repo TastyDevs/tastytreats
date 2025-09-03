@@ -135,10 +135,19 @@ function escapeHtml(s) {
 
 // Ekrana göre kart limiti (D:9 / T:8 / M:6)
 function getCardLimitByViewport() {
-  const w = window.innerWidth || 1200;
-  if (w >= 1024) return 9; // Desktop: 3x3
-  if (w >= 768) return 8; // Tablet: 2x4
-  return 6; // Mobile
+  const w = window.innerWidth;
+
+  if (w >= 1440) {
+    return 16;
+  }
+  if (w >= 1280) {
+    return 9;
+  }
+  if (w >= 768) {
+    return 8;
+  }
+
+  return 6;
 }
 
 // Filtre aktif mi? (arama veya herhangi bir dropdown seçiliyse)

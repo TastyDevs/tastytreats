@@ -4,8 +4,6 @@ const popularRecipeContainer = document.querySelector(
   '.popular-recipe-wrapper'
 );
 
-console.log(fetchPopularRecipes());
-
 async function displayPopularRecipes() {
   try {
     popularRecipeContainer.innerHTML = `<p>Loading recipes...</p>`;
