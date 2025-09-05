@@ -39,3 +39,9 @@ if (mobileToggle) {
     }
   });
 }
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) { 
+    navMenu.classList.remove('active'); 
+  }
+});
