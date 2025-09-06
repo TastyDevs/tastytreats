@@ -203,7 +203,7 @@
 
 /* Favorideyken: kırmızı kalp */
 .heart-btn.active svg path {
-  fill: #e53935;
+  fill: #ff6b6b;
 }
 /* Tablet */
 @media (min-width: 768px) {
