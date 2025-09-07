@@ -1,4 +1,4 @@
-import"./assets/footer-C5yPIsGx.js";const V=document.querySelectorAll(".home-slides"),ve=document.querySelectorAll(".home-dot"),_=document.createElement("div");_.classList.add("home-popup");_.innerHTML=`
+import"./assets/footer-C8BaFKcf.js";const V=document.querySelectorAll(".home-slides"),ve=document.querySelectorAll(".home-dot"),_=document.createElement("div");_.classList.add("home-popup");_.innerHTML=`
   <div class="home-popup-content">
     <span class="home-popup-close">&times;</span>
     <h2>ORDER NOW</h2>
