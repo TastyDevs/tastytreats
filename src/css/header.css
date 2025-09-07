@@ -8,6 +8,9 @@
 .header-left a:hover{
   color: var(--pistachio);
 }
+.nav-menu a:hover {
+    color: #fff;
+}
 
 .header-container {
   width: 100%;
