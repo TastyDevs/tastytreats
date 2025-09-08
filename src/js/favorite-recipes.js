@@ -163,7 +163,7 @@ function displayFavorites(filterCategory = `All categories`, page = 1) {
     .map(recipe => {
       const ratingValue = (recipe.rating / 5) * 100;
       return `
-      <div class="favorite-recipe-card" data-id="${
+      <div class="favorite-recipe-card recipe-card" data-id="${
         recipe._id
       }" data-category="${recipe.category}">
         <button class="heart-btn favorite-heart-btn active" aria-label="Remove from favorites">
@@ -187,7 +187,7 @@ function displayFavorites(filterCategory = `All categories`, page = 1) {
                 <span class="stars-filled">★★★★★</span>
               </div>
             </div>
-            <button class="see-recipe-btn" type="button">See recipe</button>
+            <button class="see-recipe-btn recipe-card-button " type="button">See recipe</button>
           </div>
         </div>
       </div>
