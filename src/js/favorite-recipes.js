@@ -163,7 +163,7 @@ function displayFavorites(filterCategory = `All categories`, page = 1) {
     .map(recipe => {
       const ratingValue = (recipe.rating / 5) * 100;
       return `
-      <div class="favorite-recipe-card recipe-card" data-id="${
+      <div class="recipe-card favorite-recipe-card" data-id="${
         recipe._id
       }" data-category="${recipe.category}">
         <button class="heart-btn favorite-heart-btn active" aria-label="Remove from favorites">

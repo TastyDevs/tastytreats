@@ -176,6 +176,7 @@
   }
   .favorite-recipe-card {
     flex-direction: row;
+    width: 224px;
     height: 244px;
   }
   .favorite-recipe-card-details {
@@ -247,6 +248,7 @@
   }
 
   .favorite-recipe-card {
+    width: 258px;
     height: 287px;
   }
 
